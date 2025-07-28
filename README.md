@@ -28,7 +28,7 @@
 
 還書模式
 <img width="1193" height="646" alt="還書模式" src="https://github.com/user-attachments/assets/1b36627e-56dd-4108-8678-2b4bfad356c7" />
-<img width="1280" height="720" alt="還書後" src="https://github.com/user-attachments/assets/cc1841ec-09e8-41b4-a0c9-976997efbc25" />
+<img width="1260" height="626" alt="還書後" src="https://github.com/user-attachments/assets/1ea357f4-3fb3-4883-8b9d-11590cd9548f" />
 
 預約模式
 <img width="1268" height="596" alt="預約模式" src="https://github.com/user-attachments/assets/08486823-e821-4391-bb78-c674a1b22dca" />
