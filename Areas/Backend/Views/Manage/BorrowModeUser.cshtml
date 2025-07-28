@@ -1,0 +1,12 @@
+﻿@model List<test2.Models.ManagementModels.ZhongXian.Borrow.BorrowUser>
+@{ 
+    System.Text.StringBuilder name = new System.Text.StringBuilder(Model[0].cName);
+    int nameLength = name.Length / 2 != 0 ? name.Length / 2 : name.Length / 2 + 1; 
+    name[nameLength] = 'O';
+    string newName = name.ToString();
+}
+
+<table class="table table-hover table-success table-borderless" style="width: 100%; table-layout: fixed;">
+    <tr class="fs-1 fw-bold my-3"><td style="width:300px">借閱者ID:</td>  <td> @Model[0].cId</td></tr>
+    <tr class="fs-1 fw-bold my-3 " title="@Model[0].cName"><td>借閱者姓名:</td><td> @newName</td></tr>
+</table>

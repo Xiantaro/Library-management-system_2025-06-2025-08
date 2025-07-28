@@ -1,0 +1,31 @@
+﻿@model IEnumerable<test2.Models.Client>
+
+@{
+    var client = Model.FirstOrDefault();
+}
+
+<div class="container" style="width:90vw">
+    <div class="container-fluid card col-8 shadow-lg rounded-5 p-5" style="width:100%">
+        <table class="table table-striped table-hover align-middle" style="table-layout: fixed;">
+            <colgroup>
+                <col style="width: 20%;">
+                <col style="width: 80%;">
+            </colgroup>
+            <thead class="table-light text-start">
+                <tr>
+                    <th>通知日期</th>
+                    <th>通知內容</th>
+                </tr>
+            </thead>
+            <tbody class="text-start">
+                @foreach (var message in client!.Notifications.Reverse())
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => message!.NotificationDate)</td>
+                        <td style="white-space: pre-line">@Html.DisplayFor(modelItem => message!.Message)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

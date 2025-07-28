@@ -1,0 +1,208 @@
+﻿:root {
+    --bs-primary: #5cb85c;
+    /* 綠色主題 */
+    --bs-primary-rgb: 92, 184, 92;
+    --bs-light-green: #e9f0e6;
+    /* 淺綠色，用於背景或邊框 */
+    --bs-dark-green: #3d793d;
+    /* 深綠色，用於強調 */
+    --bs-text-dark: #212529;
+    /* 深色文字 */
+}
+
+
+
+body {
+    font-family: 'Noto Sans TC', '微軟正黑體', 'Microsoft JhengHei', sans-serif;
+    /* 設定常用繁體中文字體，優先使用思源黑體 */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* 讓頁面至少佔滿整個視窗高度 */
+    background-color: #fcfaf7;
+    /* 更柔和、溫暖的淺米白背景色 */
+    color: #333;
+    /* 預設文字顏色 */
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    /* 垂直排列子元素 */
+    min-height: 100vh;
+    margin: 0;
+    /* 移除預設邊距 */
+    justify-content: center;
+    align-items: center;
+}
+
+#tree-section {
+    height: 0;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Noto Serif TC', serif;
+    /* 標題使用思源宋體，更有書卷氣 */
+    color: #4a6b52;
+    /* 深綠色調，沉穩有質感 */
+}
+
+/* 註冊卡片樣式 (沿用 login-card 的樣式) */
+.login-card {
+    background-color: #ffffff;
+    padding: 3rem;
+    /* 增加內距 */
+    border-radius: 12px;
+    /* 圓角更柔和 */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    /* 更細緻的陰影 */
+    max-width: 420px;
+    /* 卡片最大寬度 */
+    width: 100%;
+    border: 1px solid #e0e0e0;
+    /* 輕微的邊框，增加質感 */
+}
+
+    .login-card h3 {
+        color: #4a6b52;
+        /* 深綠色標題 */
+        margin-bottom: 2.5rem;
+        /* 增加標題下邊距 */
+        text-align: center;
+        font-weight: 700;
+        /* 更粗的字體 */
+        letter-spacing: 1px;
+        /* 字母間距稍微大一點 */
+    }
+
+    .login-card .form-label {
+        color: #555;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .login-card .form-control {
+        border-radius: 8px;
+        /* 輸入框圓角 */
+        padding: 0.9rem 1.2rem;
+        border: 1px solid #dcdcdc;
+        /* 輕微的邊框 */
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .login-card .form-control:focus {
+            border-color: #8cc63f;
+            /* focus 時邊框顏色 */
+            box-shadow: 0 0 0 0.25rem rgba(140, 198, 63, 0.25);
+            /* focus 時陰影 */
+            outline: none;
+        }
+
+    .login-card .btn-success {
+        background-color: var(--c-green2-100);
+        /* 更柔和的綠色按鈕 */
+        border-color: #e9f0e6;
+        padding: 0.9rem 2.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+        letter-spacing: 1px;
+    }
+
+        .login-card .btn-success:hover {
+            background-color: #6a9955;
+            /* 滑鼠移過變成深綠色 */
+            border-color: #4a6b52;
+        }
+
+    .login-card .form-text {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+    }
+
+        .login-card .form-text a {
+            font-weight: 500;
+            color: #6a9955; /* 連結顏色改成綠色系 */
+        }
+
+    .login-card .btn-google,
+    .login-card .btn-facebook {
+        font-weight: bold;
+        font-family: 'Noto Sans TC', '微軟正黑體', 'Microsoft JhengHei', sans-serif;
+        display: none; /* 註冊頁面通常沒有第三方登入按鈕，所以先隱藏 */
+    }
+
+/* 覆寫 bootstarp btn 樣式 btn-primary btn-secondary(隱私權政策、會員條款) */
+
+.btn-primary {
+    background-color: var(--c-green2-100);
+    border-color: #e9f0e6;
+}
+
+    .btn-primary:hover {
+        background-color: #6a9955;
+        /* 滑鼠移過變成深綠色 */
+        border-color: #4a6b52;
+    }
+
+.btn-secondary {
+    background-color: var(--c-green2-100);
+    border-color: #e9f0e6;
+}
+
+    .btn-secondary:hover {
+        background-color: #6a9955;
+        /* 滑鼠移過變成深綠色 */
+        border-color: #4a6b52;
+    }
+
+/* 調整註冊頁面的連結佈局 */
+.register-links {
+    display: flex;
+    justify-content: center; /* 讓內容居中 */
+    margin-top: 1.5rem; /* 調整上邊距 */
+}
+
+    .register-links a {
+        font-weight: 500;
+        color: #6a9955; /* 連結顏色改成綠色系 */
+        text-decoration: none; /* 移除底線 */
+    }
+
+        .register-links a:hover {
+            text-decoration: underline; /* 滑鼠移過時顯示底線 */
+        }
+
+    .register-links span {
+        margin: 0 10px; /* 增加連結間的間距 */
+        color: #aaa; /* 分隔符號顏色 */
+    }
+
+/* 預設隱藏整個錯誤訊息容器 */
+.error-message {
+    min-height: 2em;
+    visibility: hidden; /* 隱藏內容但保留空間 */
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+/* 當 input 有驗證錯誤時，顯示 .error-message */
+.input-validation-error + .error-message{
+    visibility: visible;
+    opacity: 1;
+}
+
+.icon-lg {
+    font-size: 1em;
+    margin-right: 0.5em; /* icon 和文字間距 */
+    color: #ff0000;
+}

@@ -1,0 +1,112 @@
+﻿:root {
+    --c-black-075: rgba(0, 0, 0, .75);
+    --c-blue---050: rgba(10, 30, 60, .5);
+    --c-brown1-000: rgba(225, 180, 105, 0);
+    --c-brown1-010: rgba(225, 180, 105, .1);
+    --c-brown1-025: rgba(225, 180, 105, .25);
+    --c-brown2-050: rgba(150, 120, 90, .5);
+    --c-brown2-075: rgba(150, 120, 90, .75);
+    --c-brown3-100: rgba(210, 150, 90);
+    --c-gray1-100: rgba(34, 34, 34);
+    --c-gray2-025: rgba(153, 153, 153, .25);
+    --c-gray2-050: rgba(153, 153, 153, .5);
+    --c-gray2-100: rgba(153, 153, 153);
+    --c-gray3-100: rgba(204, 204, 204);
+    --c-gray4-100: rgba(221, 221, 221);
+    --c-green1-000: rgba(215, 230, 165, 0);
+    --c-green1-025: rgba(215, 230, 165, .25);
+    --c-green1-050: rgba(215, 230, 165, .5);
+    --c-green1-100: rgba(215, 230, 165);
+    --c-green2-000: rgba(165, 190, 125, 0);
+    --c-green2-025: rgba(165, 190, 125, .25);
+    --c-green2-050: rgba(165, 190, 125, .5);
+    --c-green2-075: rgba(165, 190, 125, .75);
+    --c-green2-100: rgba(165, 190, 125); 
+    --c-orange-025: rgba(255, 225, 185, .25);
+    --c-orange-100: rgba(255, 225, 185);
+    --f-family-001: 'Righteous', 'Noto Sans TC', sans-serif;
+    --h-header: 10vh;
+}
+html {
+    height: 80%;
+    margin: 0;
+}
+
+body {
+    height: 100%;
+    background-color: #E0E8D7; /* 柔和灰綠 */
+    color: #235A32; /* 文字深綠 */
+    margin: 0;
+}
+
+header {
+    background-color: #2E7D32; /* 深綠 */
+    color: white;
+    padding: 1rem;
+}
+
+
+.nav-link {
+    color: white;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    color: #F5F5DC; /* 米色 */
+    background-color: #8C5B42; /* 棕色 */
+    border-radius: 5px;
+}
+
+.accordion {
+    background-color: #D0E0B8;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.accordion-button {
+    background-color: #2E7D32;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #8C5B42;
+    color: white;
+}
+
+.nav-link {
+    color: #235A32;
+    padding-left: 1rem;
+}
+
+.nav-link:hover {
+    color: #F5F5DC;
+    background-color: #8C5B42;
+    border-radius: 5px;
+}
+
+.sub-category {
+    margin-top: 5px;
+    margin-left: 15px;
+}
+
+footer {
+    background-color: #2E7D32;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 88.7vh;
+}
+
+.content {
+    flex: 1;
+}
+

@@ -1,0 +1,22 @@
+﻿@model test2.Models.ManagementModels.ZhongXian.Normal.ResultViewModel
+
+
+@if (Model.ResultCode != 0)
+{
+    
+    System.Text.StringBuilder name = new System.Text.StringBuilder(Model.cName);
+    int nameLength = name.Length / 2 != 0 ? name.Length / 2 : name.Length / 2 + 1;
+    name[nameLength] = 'O';
+    string newName = name.ToString();
+    <table class="table table-hover table-hover align-middle" style="width: 100%; table-layout: fixed;">
+        <tr class="fs-4 fw-bold"><td style="width:130px">借閱ID:</td><td>@Model.Cid</tr>
+        <tr class="fs-4 fw-bold"><td>借閱人:</td><td>@newName</td></tr>
+        <tr class="fs-4 fw-bold"><td>書籍名稱: </td><td class="text-truncate">@Model.title</td></tr>
+        <tr class="fs-4 fw-bold"><td>預約日期:</td><td>@DateTime.Now</td></tr>
+        <tr class="table-success text-center fw-bold"><td colspan="2" class=" fs-1 fw-bold text-success">成功預約</td></tr>
+    </table>
+}
+else
+{
+    <div class="alert alert-danger fs-1 text-center">@Model.Message</div>
+}

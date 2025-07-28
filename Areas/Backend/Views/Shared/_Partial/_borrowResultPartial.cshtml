@@ -1,0 +1,144 @@
+﻿@model test2.Models.ManagementModels.ZhongXian.Normal.QueryViewModel
+@if (Model.BorrowQueryDTOs?.Count != 0)
+{
+    @await Html.PartialAsync("~/Areas/Backend/Views/Shared/_Partial/_pageParital.cshtml", Model.PageCounts?.FirstOrDefault())
+    <table class="table mt-1 table-hover" style="width: 100%; table-layout: fixed;">
+        <thead class="table-success table-striped">
+            <tr class="fs-4 fw-bold">
+                <th scope="col" style="width: 130px ">借閱編號</th>
+                <th scope="col" style="width:230px">書籍編號</th>
+                <th scope="col" style="width:300px">書籍名稱</th>
+                <th scope="col" style="width:100px">借閱者</th>
+                <th scope="col" style="width:160px">借閱日期</th>
+                <th scope="col" style="width:150px">借閱期限</th>
+                <th scope="col" style="width:160px">還書日期</th>
+                <th scope="col" class="text-center">借閱狀態</th>
+                <th scope="col" class="text-center">-</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in Model.BorrowQueryDTOs!)
+            {
+                <tr>
+                    <td class="align-middle fs-4">@x.borrowId</td>
+                    <td class="align-middle fw-bold">@x.bookCode</td>
+                    <td class="align-middle text-truncate BorrowBookTitle fs-4" title="@x.title">@x.title</td>
+                    <td class="align-middle text-truncate NotificationUserid fs-4 " title="@x.cId">@x.cId</td>
+                    <td class="align-middle fs-4"> @(x.borrowDate.HasValue ? x.borrowDate.Value.ToString("yyyy/MM/dd tt hh:mm") : "-")</td>
+                    <td class="align-middle BorrowDueDate fs-4">@(x.dueDateB.HasValue ? x.dueDateB.Value.ToString("yyyy/MM/dd") : "-")</td>
+                    @if (@x.borrowStatus == "借閱中")
+                    {
+                        <td class="align-middle fs-4">@(x.returnDate.HasValue ? x.returnDate.Value.ToString("yyyy/MM/dd tt hh:mm") : "-")</td>
+                        <td class=' align-middle fw-bold cent text-center fs-2 text-white' style="background-color: var(--c-green2-100); ">@x.borrowStatus</td>
+                        <td class="align-middle align-items-center text-center "><button class="btn btn-warning mx-3 NotificationBtn fs-2 fw-bold" data-bs-toggle="modal" data-bs-target="#notificationModal" data-type="notification">通知</button></td>
+                        ;
+                    }
+                    else if (@x.borrowStatus == "已歸還")
+                    {
+                        <td class="align-middle fs-4">@(x.returnDate.HasValue ? x.returnDate.Value.ToString("yyyy/MM/dd tt hh:mm") : "-")</td>
+                        <td class='text-bg-secondary align-middle fw-bold text-center fs-2'>@x.borrowStatus</td>
+                        <td class="align-middle align-items-center text-center ">-</td>
+                    }
+
+                    else if (@x.borrowStatus == "逾期")
+                    {
+                        if (string.IsNullOrEmpty(x.returnDate.ToString()))
+                        {
+                            <td class="align-middle fs-4">@(x.returnDate.HasValue ? x.returnDate.Value.ToString("yyyy/MM/dd tt hh:mm") : "-")</td>
+                            <td class='text-bg-danger align-middle fw-bold text-center fs-2'>@x.borrowStatus</td>
+                            <td class="align-middle align-items-center text-center "><button class="btn btn-secondary mx-3 NotificationBtn fs-2 disabled fw-bold" data-bs-toggle="modal" data-bs-target="#notificationModal" data-type="notification">通知</button></td>
+;
+                        }
+                        else
+                        {
+                            <td class="align-middle fs-4">@(x.returnDate.HasValue ? x.returnDate.Value.ToString("yyyy/MM/dd tt hh:mm") : "-")</td>
+                            <td class='text-bg-danger align-middle fw-bold text-center fs-2'>逾期歸還</td>
+                            <td class="align-middle align-items-center text-center ">-</td>
+;
+                        }
+                    }
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    <div class="container d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            @if ((Model.PageCounts?.FirstOrDefault()?.TotalPage) != 1)
+            {
+                <ul class="pagination">
+                    <li class="page-item">
+                        @if ((Model.PageCounts?.FirstOrDefault()?.CurrentPage) == 1)
+                        {<a class="page-link disabled fs-2" href="#" aria-label="Previous" data-page=""><span aria-hidden="true">&laquo;</span></a>}
+                        else
+                        { <a class="page-link fs-2" href="#" aria-label="Previous" data-page="@((Model.PageCounts?.FirstOrDefault()?.CurrentPage) -1)"><span aria-hidden="true">&laquo;</span></a>}
+                    </li>
+                    @for (int x = 1; x <= (Model.PageCounts?.FirstOrDefault()?.TotalPage); x++)
+                    {
+                        @if ((Model.PageCounts?.FirstOrDefault()?.TotalPage) != 1)
+                        {
+                            if ((Model.PageCounts?.FirstOrDefault()?.CurrentPage) == x)
+                            {
+                                <li class="page-item"><a class="page-link text-white disabled fs-2 fw-bold" style="background-color: #2E7D32" href="#" data-page="@x">@x</a></li>
+ }
+                            else
+                            {
+                                <li class="page-item "><a class="page-link fs-2" href="#" data-page="@x">@x</a></li>
+}
+                        }
+                    }
+                    <li class="page-item">
+                        @if ((Model.PageCounts?.FirstOrDefault()?.CurrentPage) == (Model.PageCounts?.FirstOrDefault()?.TotalPage))
+                        {<a class="page-link disabled fs-2" href="#" aria-label="Next" data-page=""><span aria-hidden="true">&raquo;</span></a>}
+                        else
+                        { <a class="page-link fs-2" href="#" aria-label="Next" data-page="@((Model.PageCounts?.FirstOrDefault()?.CurrentPage) + 1)"><span aria-hidden="true">&raquo;</span></a>}
+                    </li>
+                </ul>
+            }
+        </nav>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger fs-1 mt-5">查無資料</div>
+}
+
+
+<div class="modal fade" id="notificationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border">
+            <div class="modal-header">
+                <label class="modal-title fs-1 fw-bold">通知訊息</label>
+                <button type="button" class="btn-close fs-3" data-bs-dismiss="modal" aria-label="Close" id="CancelBox"></button>
+            </div>
+            <div class="modal-body">
+                <form id="NotificationFom">
+                    <div class="mb-3">
+                        <label for="NotificationId" class="form-label fs-3">收件人編號:</label>
+                        <input type="number" class="form-control fs-3" id="NotificationId" name="NotificationId" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="NotificationType" class="form-label fs-3">通知類型:</label>
+                        <select class="form-select fs-3" id="NotificationType" name="NotificationType">
+                            <option value="即將到期通知" selected>即將到期通知</option>
+                            <option value="逾期警告通知">逾期警告通知</option>
+                            <option value="圖書館通知">其他通知</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="NotificationTextarea" class="form-label fs-3">內容:</label>
+                        <textarea class="form-control fs-4" id="NotificationTextarea" rows="4" name="NotificationTextarea" style="height:200px"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn fs-2 btn-primary" id="NotificationSend">送出</button>
+                <button type="button" class="btn fs-2 fw-bold text-white"   id="NotificationClear" style="background-color: rgba(166, 30, 53, 1)">清除</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

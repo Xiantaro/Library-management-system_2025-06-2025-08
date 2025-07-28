@@ -1,0 +1,94 @@
+﻿<div class="accordion" id="box_accordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#accordion2" aria-expanded="true" aria-controls="accordion2">
+                類別
+            </button>
+        </h2>
+        <div id="accordion2" class="accordion-collapse collapse show" style="text-align: start">
+            <div class="accordion-body">
+                <a href="#" class="text-dark-emphasis btn_accordion btn_type">小說</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_type">兒童讀物</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_type">青少年讀物</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_type">散文</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_type">傳記</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_type">詩集</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_type">漫畫</a>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#accordion3" aria-expanded="true" aria-controls="accordion3">
+                作者
+            </button>
+        </h2>
+        <div id="accordion3" class="accordion-collapse collapse show" style="text-align: start">
+            <div class="accordion-body">
+                <a href="#" class="text-dark-emphasis btn_accordion btn_author">張忠謀</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_author">尾田榮一郎</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_author">Antoine de Saint-Exupéry</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_author">Boris Vian</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_author">Erin Hunter</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_author">Walter Isaacson</a>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#accordion4" aria-expanded="true" aria-controls="accordion4">
+                出版社
+            </button>
+        </h2>
+        <div id="accordion4" class="accordion-collapse collapse show" style="text-align: start">
+            <div class="accordion-body">
+                <a href="#" class="text-dark-emphasis btn_accordion btn_publisher">東立</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_publisher">遠見天下文化出版股份有限公司</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_publisher" id="btn_publisher3">HARPERCOLLINS PUBLISHERS</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_publisher">Wakefield Press</a>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#accordion1" aria-expanded="true" aria-controls="accordion1">
+                語言
+            </button>
+        </h2>
+        <div id="accordion1" class="accordion-collapse collapse show" style="text-align: start">
+            <div class="accordion-body">
+                <a href="#" class="text-dark-emphasis btn_accordion btn_lang">中文</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_lang">English</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_lang">日本語</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_lang">한국어</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_lang">le français</a>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#accordion5" aria-expanded="true" aria-controls="accordion5">
+                年分
+            </button>
+        </h2>
+        <div id="accordion5" class="accordion-collapse collapse show" style="text-align: start">
+            <div class="accordion-body">
+                <a href="#" class="text-dark-emphasis btn_accordion btn_year">1950 ~ 2000</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_year">2000 ~ 2009</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_year">2010 ~ 2019</a>
+                <a href="#" class="text-dark-emphasis btn_accordion btn_year">2020 ~ 2025</a>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn w-100" id="Cbtn_reset">重製</button>
+</div>
+
+<form asp-area="Frontend" asp-controller="Home" asp-action="Collection" method="post" class="d-none">
+    <input type="text" class="form-control" id="Cbox_type" name="type">
+    <input type="text" class="form-control" id="Cbox_author" name="author">
+    <input type="text" class="form-control" id="Cbox_publisher" name="publisher">
+    <input type="text" class="form-control" id="Cbox_lang" name="lang">
+    <input type="text" class="form-control" id="Cbox_year1" name="year1">
+    <input type="text" class="form-control" id="Cbox_year2" name="year2">
+    <button type="submit" id="Cbtn_submit"></button>
+</form>

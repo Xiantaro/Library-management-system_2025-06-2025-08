@@ -1,0 +1,25 @@
+﻿@using test2.Models.ManagementModels.ZhongXian.Normal
+
+@model ResultViewModel
+
+@if (Model.ResultCode != 0)
+{
+    System.Text.StringBuilder name = new System.Text.StringBuilder(Model.cName);
+    int nameLength = name.Length / 2 != 0 ? name.Length / 2 : name.Length / 2 + 1;
+    name[nameLength] = 'O';
+    string newName = name.ToString();
+    <table class="table table-hover table-success table-borderless align-middle" style="width: 100%; table-layout: fixed;">
+        <tr class="fs-3 fw-bold" ><td style="width:150px">借閱ID:</td><td>@Model.Cid</td></tr>
+        <tr class="fs-3 fw-bold" ><td>借閱者:</td><td title="@Model.cName">@newName</td></tr>
+        <tr class="fs-3 fw-bold" ><td>書籍編號:</td><td title="@Model.bookcode">@Model.bookcode</td></tr>
+        <tr class="fs-3 fw-bold" ><td>書籍名稱:</td><td title="@Model.title">@Model.title</td></tr>
+        <tr class="fs-3 fw-bold" ><td>借閱日期:</td><td>@DateTime.Now</td></tr>
+        <tr class="fs-3 fw-bold" ><td>還書日期:</td><td>@DateTime.Now.AddDays(14).ToString("yyyy/MM/dd")</td></tr>
+        <tr class="table-dark fw-bold active text-center "><td colspan="2" class="fs-1 table-dark text-success fw-bold">成功借閱</td></tr>
+    </table>
+}
+else
+{
+    <div class="fs-1 alert alert-danger text-center">@Model.Message</div>
+}
+

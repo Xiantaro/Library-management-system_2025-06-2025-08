@@ -1,0 +1,234 @@
+﻿@model test2.Areas.Frontend.Models.Dtos.UserRegistrationDto
+
+@await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_modal.cshtml")
+
+<main>
+    <div class="login-card">
+        <h3 style="color: var(--c-green2-100)">會員註冊</h3>
+        <form asp-controller="Home" asp-action="Register" method="post">
+            <div>
+                <label asp-for="Name" class="form-label">姓名</label>
+                <input asp-for="Name" class="form-control" placeholder="請輸入姓名"/>
+                <div class="error-message">
+                    <i class="icon-lg bi bi-exclamation-circle-fill"></i>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div>
+                <label asp-for="PhoneNumber" class="form-label">電話號碼</label>
+                <input asp-for="PhoneNumber" class="form-control" placeholder="請輸入您的電話號碼">
+                <div class="error-message">
+                    <i class="icon-lg bi bi-exclamation-circle-fill"></i>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div>
+                <label asp-for="Email" class="form-label">電子信箱</label>
+                <input asp-for="Email" class="form-control" placeholder="請輸入您的電子信箱">
+                <div class="error-message">
+                    <i class="icon-lg bi bi-exclamation-circle-fill"></i>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div>
+                <label asp-for="Password" class="form-label">密碼</label>
+                <input asp-for="Password" class="form-control" placeholder="請輸入您的密碼">
+                <div class="error-message">
+                    <i class="icon-lg bi bi-exclamation-circle-fill"></i>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-2">
+                <label asp-for="ConfirmPassword" class="form-label">確認密碼</label>
+                <input asp-for="ConfirmPassword" class="form-control" placeholder="請再次輸入您的密碼">
+                <div class="error-message">
+                    <i class="icon-lg bi bi-exclamation-circle-fill"></i>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-success">立即註冊</button>
+            </div>
+            <div class="register-links">
+                <a href="#" class="me-2" data-bs-toggle="modal" data-bs-target="#libraryTermsModal">會員條款</a>
+                <span>|</span>
+                <a href="#" class="ms-2" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">隱私權政策</a>
+            </div>
+            <div class="form-text">
+                已經有帳號了？ <a href="@Url.Action("LoginC", "Access")">登入</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<section id="tree-section">
+    @await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_tree.cshtml")
+</section>
+
+@* Modal 的 HTML 結構 *@
+<div class="modal fade" id="registrationMessageModal" tabindex="-1" aria-labelledby="registrationMessageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registrationMessageModalLabel">註冊結果</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="MessageContent"></p>
+                <p id="countdownMessage">將在 <span id="countdown">5</span> 秒後自動跳轉到登入頁面。</p>
+            </div>
+            <div class="modal-footer">
+                <button id="redirect-btn" type="button" class="btn btn-primary" onclick="window.location.href='@Url.Action("Login", "Home", new { area = "Frontend" })'">立即跳轉</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="libraryTermsModal" tabindex="-1" aria-labelledby="libraryTermsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="libraryTermsModalLabel">圖書館會員條款</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4>第一條：會員資格與申請</h4>
+                <p>1.1 凡中華民國國民年滿十二歲，或外籍人士持有合法居留證明者，均可依本條款申請圖書館會員資格。</p>
+                <p>1.2 申請人須提供真實、完整、有效的個人資料，如電話號碼、電子信箱等，並同意本圖書館使用於會員管理及相關服務。</p>
+                <p>1.3 申請人成功註冊並經本圖書館審核通過後，即成為正式會員，享有本圖書館提供之各項服務及權利。</p>
+
+                <h4>第二條：會員權利與義務</h4>
+                <p>2.1 會員得依本圖書館規定借閱圖書、期刊、視聽資料及使用各項設施。</p>
+                <p>2.2 會員有義務妥善保管會員帳號及密碼，如有遺失或遭盜用，應立即通知本圖書館。</p>
+                <p>2.3 會員應遵守本圖書館各項規章及閱覽規定，愛護圖書資料及公共財物，如有損壞或遺失，應負賠償責任。</p>
+                <p>2.4 會員個人資料如有變更，應及時向本圖書館更新，以確保服務品質。</p>
+
+                <h4>第三條：資料使用與隱私保護</h4>
+                <p>3.1 本圖書館將依據《個人資料保護法》及相關法令規定，蒐集、處理及利用會員之個人資料。</p>
+                <p>3.2 會員個人資料僅供本圖書館內部管理、服務提供、統計分析及行銷活動之用，非經會員同意或法律規定，本圖書館絕不將其公開予第三人。</p>
+                <p>3.3 會員有權查詢、閱覽、複製、補充或更正其個人資料，並得要求停止蒐集、處理、利用或刪除。</p>
+
+                <h4>第四條：服務終止與變更</h4>
+                <p>4.1 會員如違反本條款或本圖書館相關規定，本圖書館有權暫停或終止其會員資格及相關服務。</p>
+                <p>4.2 會員得隨時向本圖書館申請終止會員資格。</p>
+                <p>4.3 本圖書館保留隨時修改、變更或終止本會員條款之權利，並將透過公告或其他適當方式通知會員。</p>
+
+                <h4>第五條：準據法與爭議解決</h4>
+                <p>5.1 本條款之解釋與適用，悉依中華民國法律為準據法。</p>
+                <p>5.2 因本條款所生之任何爭議，雙方應先行協商解決；協商不成時，同意以台灣台中地方法院為第一審管轄法院。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">我已閱讀並同意</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="privacyPolicyModal" tabindex="-1" aria-labelledby="privacyPolicyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="privacyPolicyModalLabel">隱私權政策</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4>一、隱私權政策的適用範圍</h4>
+                <p>隱私權政策內容，包括本網站如何處理在您使用網站服務時收集到的個人識別資料。隱私權政策不適用於本網站以外的相關連結網站，也不適用於非本網站所委託或參與管理的人員。</p>
+
+                <h4>二、個人資料的蒐集、處理及利用方式</h4>
+                <p>2.1 當您造訪本網站或使用本網站所提供之功能服務時，我們將視該服務功能性質，請您提供必要的個人資料，並在該特定目的範圍內處理及利用您的個人資料；非經您書面同意，本網站不會將個人資料用於其他用途。</p>
+                <p>2.2 本網站在您使用服務信箱、問卷調查等互動性功能時，會保留您所提供的姓名、電子郵件地址、聯絡方式及使用時間等。</p>
+                <p>2.3 於一般瀏覽時，伺服器會自行記錄相關行徑，包括您使用連線設備的IP位址、使用時間、使用的瀏覽器、瀏覽及點選資料記錄等，作為我們增進網站服務的參考依據，此記錄為內部應用，絕不對外公佈。</p>
+                <p>2.4 為提供精確的服務，我們會將收集的問卷調查內容進行統計與分析，分析結果之統計數據或說明文字呈現，除供內部研究外，我們會視需要公佈統計數據及說明文字，但不涉及特定個人之資料。</p>
+
+                <h4>三、資料之保護</h4>
+                <p>3.1 本網站主機均設有防火牆、防毒系統等相關的資訊安全設備及必要的安全防護措施，保護網站及您的個人資料採用嚴格的保護措施，只由經過授權的人員才能接觸您的個人資料相關處理人員皆簽有保密合約，如有違反保密義務者，將會受到相關的法律處分。</p>
+                <p>3.2 如因業務需要有必要委託其他單位提供服務時，本網站亦會嚴格要求其遵守保密義務，並且採取必要的檢查程序以確定其將確實遵守。</p>
+
+                <h4>四、網站對外的相關連結</h4>
+                <p>本網站的網頁提供其他網站的網路連結，您也可經由本網站所提供的連結，點選進入其他網站。但該連結網站不適用本網站的隱私權政策，您必須參考該連結網站中的隱私權保護政策。</p>
+
+                <h4>五、與第三人共用個人資料之政策</h4>
+                <p>本網站絕不會提供、交換、出租或出售任何您的個人資料給其他個人、團體、私人企業或公務機關，但有法律依據或合約義務者，不在此限。</p>
+                <p>前項但書之情形包括不限於：</p>
+                <ul>
+                    <li>經由您書面同意。</li>
+                    <li>法律明文規定。</li>
+                    <li>為免除您生命、身體、自由或財產上之危險。</li>
+                    <li>與公務機關或學術研究機構合作，基於公共利益為統計或學術研究而有必要，且資料經過提供者處理或蒐集者依其揭露方式無從識別特定之當事人。</li>
+                    <li>當您在網站的行為，違反服務條款或可能損害或妨礙網站與其他使用者權益或導致任何人遭受損害時，經網站管理單位研析揭露您的個人資料是為了辨識、聯絡或採取法律行動所必要者。</li>
+                    <li>有利於您的權益。</li>
+                    <li>本網站委託廠商協助蒐集、處理或利用您的個人資料時，將對委外廠商或個人善盡監督管理之責。</li>
+                </ul>
+
+                <h4>六、Cookie 之使用</h4>
+                <p>為了提供您最佳的服務，本網站會在您的電腦中放置並取用我們的Cookie，若您不願接受Cookie的寫入，您可在您使用的瀏覽器功能項中設定隱私權等級為高，即可拒絕Cookie的寫入，但可能會導致網站某些功能無法正常執行。</p>
+
+                <h4>七、隱私權政策之修正</h4>
+                <p>本網站隱私權政策將因應需求隨時進行修正，修正後的條款將刊登於網站上。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">我已閱讀並同意</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+            // 從 TempData 取得旗標和訊息
+            var showModal = @((bool)(TempData["ShowModal"] ?? false) ? "true" : "false");
+            var result = "@Html.Raw((string)TempData["Result"] == "success" ? "success" : "fail")";
+            var resultMessage = "@Html.Raw(TempData["ResultMessage"] ?? "")";
+
+            if (showModal) {
+                if (result === "success"){
+                    $('#MessageContent').text(resultMessage); // 將訊息顯示在 Modal 內容中
+                    var myModal = new bootstrap.Modal(document.getElementById('registrationMessageModal'));
+                    myModal.show(); // 顯示 Modal
+
+                    let countdownElement = $('#countdown');
+                    let countdown = 5; // 初始倒數秒數
+                    let timer; // 用來儲存 setTimeout 的 ID
+
+                    // 定義倒數函式
+                    function updateCountdown() {
+                        countdown--;
+                        countdownElement.text(countdown);
+
+                        if (countdown <= 0) {
+                            // 當倒數結束時，清除計時器並跳轉
+                            clearTimeout(timer);
+                            window.location.href = '@Url.Action("Index", "Home", new { area = "Frontend" })'; // 自動跳轉
+                        } else {
+                            // 否則，設定下一次的倒數
+                            timer = setTimeout(updateCountdown, 1000);
+                        }
+                    }
+
+                    // 第一次啟動倒數
+                    timer = setTimeout(updateCountdown, 1000);
+
+                    // 如果使用者手動關閉 Modal，停止計時器
+                    $('#registrationMessageModal').on('hidden.bs.modal', function () {
+                        clearTimeout(timer);
+                    });
+                } else if (result === "fail"){
+                    $('#MessageContent').text(resultMessage); // 將訊息顯示在 Modal 內容中
+                    var myModal = new bootstrap.Modal(document.getElementById('registrationMessageModal'));
+                    myModal.show(); // 顯示 Modal
+
+                    let countdownMessageElement = $('#countdownMessage');
+                    countdownMessageElement.css("visibility", "hidden"); // 隱藏倒數訊息
+
+                    const redirectBtn = $('#redirect-btn');
+                    redirectBtn.css("display", "none"); // 隱藏立即跳轉按鈕
+                }
+            }
+        });
+    </script>
+}

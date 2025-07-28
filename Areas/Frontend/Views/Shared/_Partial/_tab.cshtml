@@ -1,0 +1,85 @@
+﻿@model IEnumerable<test2.Models.Collection>
+
+@{
+    var collection = Model.FirstOrDefault();
+}
+
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="btn_tab1">
+        <div class="container-xl mt-4">
+            @{
+                if (!string.IsNullOrWhiteSpace(collection!.CollectionDesc))
+                {
+                    @Html.DisplayFor(modelItem => collection!.CollectionDesc)
+                }
+                else
+                {
+                    <h5 class="text-center">無相關資訊</h5>
+                }
+            }
+        </div>
+    </div>
+    <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="btn_tab2">
+        <div class="container-xl mt-4">
+            @{
+                if (!string.IsNullOrWhiteSpace(collection!.Author.AuthorDesc))
+                {
+                    @Html.DisplayFor(modelItem => collection!.Author.AuthorDesc)
+                }
+                else
+                {
+                    <h5 class="text-center">無相關資訊</h5>
+                }
+            }
+        </div>
+    </div>
+    <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="btn_tab3">
+        <div class="container-xl mt-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>編號</th>
+                        <th>書名</th>
+                        <th>ISBN</th>
+                        <th>類別</th>
+                        <th>狀態</th>
+                        <th>館藏總數</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="align-middle">
+                        <td id="td_Q">@Html.DisplayFor(modelItem => collection!.CollectionId)</td>
+                        <td>@Html.DisplayFor(modelItem => collection!.Title)</td>
+                        <td>@Html.DisplayFor(modelItem => collection!.Isbn)</td>
+                        <td>@Html.DisplayFor(modelItem => collection!.Type.Type1)</td>
+                        @{
+                            var totalCount = 0;
+                            var borrowCount = 0;
+
+                            foreach (var book in collection!.Books)
+                            {
+                                if (book.BookStatusId == 2) { borrowCount++; }
+
+                                totalCount++;
+                            }
+
+                            if (borrowCount == totalCount)
+                            {
+                                <td>借閱中</td>
+                                <td>@totalCount</td>
+                                <td><button type="button" class="btn mt-0" id="btn_reserve">預約</button></td>
+                            }
+                            else
+                            {
+                                <td>可借閱</td>
+                                <td>@totalCount</td>
+                                <td><button type="button" class="btn mt-0" id="btn_reserve">借閱</button></td>
+                            }
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

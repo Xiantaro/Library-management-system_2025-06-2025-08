@@ -1,0 +1,96 @@
+﻿@using test2.Models.ManagementModels.ZhongXian.Normal
+@model LanguageAndTypeViewModel
+
+<h1 class="fw-bold BooksAddLoginTItle" >書籍登錄</h1>
+<form   id="BooksAdded_FormData" class="needs-validation" novalidate>
+    <div class="card p-4" style="background-color: var(--c-green1-050)">
+        <div class="row justify-content-center align-content-center">
+            <div class="col-md-7">
+                <div class="mb-3 row">
+                    <div class="col">
+                        <label  class="form-label fs-3 fw-bold " for="BooksAdded_ISBM">ISBN:</label>
+                        <input class="form-control fs-3" id="BooksAdded_ISBM" name="BooksAdded_ISBM" maxlength="17" required/>
+                        <span id="BooksAdded_TitleError" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label class="form-label fs-3 fw-bold" for="BooksAdded_Type">類型:</label>
+                        <select class="form-select required-field fs-3" id="BooksAdded_Type" name="BooksAdded_Type">
+                            @if (Model.Type?.Count > 0)
+                            {
+                                foreach (var x in Model.Type) { <option value="@x.TypeId">@x.Type1</option> }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col">
+                        <label class="form-label fs-3 fw-bold" for="BooksAdded_Title">書名:</label>
+                        <input class="form-control required-field fs-3 booktitle" id="BooksAdded_Title" name="BooksAdded_Title" required/>
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label class="form-label fs-3 fw-bold" for="BooksAdded_leng">語言:</label>
+                        <select class="form-select required-field fs-3" id="BooksAdded_leng" name="BooksAdded_leng">
+                            @if (Model.Language?.Count > 0)
+                            {
+                                foreach (var x in Model.Language)  { <option value="@x.LanguageId">@x.Language1</option>  }
+                            }
+                        </select>
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col">
+                        <label class="form-label fs-3 fw-bold" for="BooksAdded_authorName">作者:</label>
+                        <input type="text" class="form-control fs-3 authorName" id="BooksAdded_authorName" name="BooksAdded_authorName" required />
+                        <input  type="number" class="authorId"  id="BooksAdded_authorId"  name="BooksAdded_authorId" value=""  hidden/>
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label class="form-label fs-3 fw-bold" name="BooksAdded_translator">譯者:</label>
+                        <input class="form-control fs-3 translator" id="BooksAdded_translator" name="BooksAdded_translator" />
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col">
+                        <label class="form-label fs-3 fw-bold" for="BooksAdded_pushier">出版社:</label>
+                        <input class="form-control required-field fs-3 pushier" id="BooksAdded_pushier" name="BooksAdded_pushier" required/>
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label class="form-label fs-3 fw-bold " for="BooksAdded_puDate">出版日期:</label>
+                        <input type="date" class="form-control required-field fs-3" id="BooksAdded_puDate" name="BooksAdded_puDate" required/>
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col">
+                        <label class="form-label fs-3 fw-bold" for="BooksAdded_inCount">新增數量:</label>
+                        <input class="form-control required-field fs-3" min="1" id="BooksAdded_inCount" name="BooksAdded_inCount" type="number" value="1" />
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fs-3 fw-bold" for="BooksAdded_Dec">書籍簡介:</label>
+                    <textarea class="form-control fs-3" id="BooksAdded_Dec" name="BooksAdded_Dec" style="height:130px"></textarea>
+                    <span class="text-danger"></span>
+                </div>
+                <div class="mt-4 text-center">
+                    <button type="button" class="btn btn-lg text-white fw-bold px-5 me-3 fs-3" id="BooksAdded_BtnSend" style="background-color: #2E7D32 "> 送出</button>
+                    <button type="button" class="btn btn-outline-dark btn-lg px-5 fs-3 fw-bold" id="BooksAdded_BtnReset">重置</button>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="mb-1">
+                    <label class="form-label fs-3 fw-bold" for="BookAdd_InputImg">封面:</label>
+                    <input type="file" name="BookAdd_InputImg" id="BookAdd_InputImg"class="form-control fs-3 InputImg" accept=".jpg, .jpeg, .png"  required/>
+                        <img  class="img-thumbnail mt-2  bg-black BookAdd_Display" style="height:678px; width:480px;" src="/images/InputTheBookImg.png" />
+                </div>
+                <div class="row justify-content-end align-content-end mt-4">
+                    <button type="submit" class="col-5 btn btn-lg btn-danger mx-4 fs-3 fw-bold BookAdd_Remove" disabled> 移除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

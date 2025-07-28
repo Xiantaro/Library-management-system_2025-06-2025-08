@@ -1,0 +1,40 @@
+﻿@model List<test2.Models.ManagementModels.ZhongXian.BookQuery.BookQueryBookCodeDTO>
+
+@if (Model.Count != 0)
+{
+    <table class="table fs-3 table-hover text-center">
+        <thead class="table-primary align-middle">
+            <tr  style="width: 100%; table-layout: fixed;">
+                <th style="width:508px">書籍編號</th>
+                <th style="width:471px">新增時間</th>
+                <th style="width:231px">書籍狀態</th>
+                <th ><i class="btn bi bi-lock-fill text-warning fs-1 bookLock fw-bold"></i><i class="bi bi-unlock-fill text-warning btn fs-1 fw-bold bookUnlock d-none"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in Model)
+            {
+                <tr class="fw-bold fs-3 bookcodeRow align-middle" data-colleciton-Id="@x.CollectionId">
+                    <td class="bookcodeId d-flex justify-content-center align-items-center" style="height:90px">@x.BookCode</td>
+                    <td>@x.AccessionDate</td>
+                    @if (@x.BookStatus1 == "可借閱")
+                    {
+                        <td class="align-middle text-light bookStatus" style="background-color: var(--c-brown3-100); ">館內</td>
+                        <td class="bookBtn"><button type="button" class="btn btn-primary btn-lg fw-bold fs-3 bookCodeEdit mx-2" onclick="BookQueryEditBookCode(this)">修改</button><button type="button" class="btn btn-lg fw-bold fs-3 bookCodeDelete bookCodelock text-white disabled" style="background-color: rgba(166, 30, 53, 1)" >刪除</button></td>
+                    }
+                    @if (@x.BookStatus1 == "借閱中")
+                    {
+                        <td class="align-middle text-white dis bookStatus" style="background-color: var(--c-green2-100); ">@x.BookStatus1</td>
+                        <td class="bookBtn">-</td>
+                    }
+                    @if (@x.BookStatus1 == "無法借閱")
+                    {
+                        <td class="align-middle text-light bookStatus" style="background-color: var(--c-black-075);">@x.BookStatus1</td>
+                        <td class="bookBtn"><button type="button" class="btn btn-primary btn-lg fw-bold fs-3 bookCodeEdit mx-2" onclick="BookQueryEditBookCode(this)" >修改</button><button type="button" class="btn btn-lg fw-bold fs-3 bookCodeDelete bookCodelock text-white disabled"  style="background-color: rgba(166, 30, 53, 1)">刪除</button></td>
+                    }
+                </tr>
+            }
+            <tr ><td colspan="4"><input class="fw-bold fs-3 text-center mx-2 bookAddAmount" value="1" min="1" max="10" type="number" style="width:80px" onkeypress="if(this.value.length === 2) return false"/><button class="btn btn-lg fw-bold fs-2 text-white  bookAdd" style="width:200px;background-color: #2E7D32 ">新增</button><button class="d-none bookAddMuti">新增隱藏</button></td></tr>
+        </tbody>
+    </table>
+}

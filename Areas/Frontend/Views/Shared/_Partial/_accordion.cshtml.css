@@ -1,0 +1,40 @@
+﻿.accordion-button:focus {
+    border-color: var(--bs-border-color);
+    box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--c-green2-025);
+}
+
+.btn_accordion {
+    display: block;
+    padding: .5rem .25rem;
+    text-decoration: none;
+}
+
+    .btn_accordion:hover {
+        background-color: var(--c-orange-025);
+    }
+
+#Cbtn_reset {
+    background-color: var(--c-blue---050);
+    color: white;
+}
+
+/*RWD*/
+@media(max-width: 768px) {
+    #btn_publisher3 {
+        font-size: .5rem;
+    }
+}
+
+@media(max-width: 992px) {
+    .btn_type,
+    .btn_author,
+    .btn_publisher,
+    .btn_lang,
+    .btn_year {
+        font-size: .75rem;
+    }
+}

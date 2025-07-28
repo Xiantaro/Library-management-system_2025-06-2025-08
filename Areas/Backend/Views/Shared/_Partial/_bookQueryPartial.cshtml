@@ -1,0 +1,95 @@
+﻿@model test2.Models.ManagementModels.ZhongXian.Normal.LanguageAndTypeViewModel
+@{
+    string MaxDate = DateTime.Now.ToString("yyyy-MM-dd");
+}
+<!-- 主內容 START -->
+<div class="row mt-1">
+    <div class="col">
+        <!-- 搜尋 START-->
+        <h1 class="fw-bold">書籍管理</h1>
+        <hr />
+        <form id="BookForm" method="post" class="d-flex justify-content-between align-items-end flex-wrap gap-3">
+            <!-- 查詢表單欄位 -->
+            <div class="d-flex flex-wrap gap-3">
+                <div>
+                    <label for="book_ISBN" class="form-label mb-0 fs-4 fw-bold">ISBN</label>
+                    <input id="book_ISBN" name="book_ISBN" type="text" class="form-control form-control fs-4 fw-bold" style="width: 260px; height: 60px" maxlength="17" />
+                </div>
+                <div>
+                    <label for="book_KeyWord" class="form-label mb-0 fs-4 fw-bold">關鍵字</label>
+                    <input id="book_KeyWord" name="book_KeyWord" type="text" class="form-control form-control-sm fs-4 fw-bold" style="width:260px; height:60px" />
+                </div>
+                <div>
+                    <label for="book_type" class="form-label mb-0 fs-4 fw-bold">類型</label>
+                    <select id="book_type" name="book_type" class="form-select form-select-sm fs-4 fw-bold" style="width:180px; height:60px">
+                        <option value="ALLIN">全部</option>
+                        @if (Model.Type?.Count != 0)
+                        {
+                           foreach(var x in Model.Type!)
+                           {
+                               <option value="@x.Type1">@x.Type1</option>
+                           }
+                        }
+                    </select>
+                </div>
+                <div>
+                    <label for="book_language" class="form-label mb-0 fs-4 fw-bold">語言</label>
+                    <select id="book_language" name="book_language" class="form-select form-select-sm fs-4 fw-bold" style="width:200px; height:60px">
+                        <option value="ALLIN">全部</option>
+                        @if (Model.Language?.Count != 0)
+                        {
+                            @foreach (var x in Model.Language!)
+                            {
+                                <option value="@x.Language1">@x.Language1</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div>
+                    <label for="book_initDate" class="form-label mb-0 fs-4 fw-bold">出版日期</label>
+                    <input id="book_initDate" name="book_initDate" type="month" class="form-control form-control-sm fs-4 fw-bold" max="@MaxDate" style="width: 180px; height: 60px" />
+                </div>
+                <div>
+                    <label for="book_lastDate" class="form-label mb-0 fs-4 fw-bold">至</label>
+                    <input id="book_lastDate" name="book_lastDate" class="form-control form-control-sm fs-4 fw-bold" type="month" max="@MaxDate" style="width: 180px; height: 60px" />
+                </div>
+                <div class="align-self-end">
+                    <button id="book_select" type="button" class="btn btn-lg fs-2 fw-bold text-white" style="background-color: #2E7D32 ">查詢</button>
+                </div>
+                <div class="align-self-end">
+                    <button id="book_clear" type="button" class="btn btn-secondary btn-lg fs-2 fw-bold">重置</button>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <div>
+                    <label for="borrow_perPage" class="form-label mb-0 fs-4 fw-bold">筆數</label>
+                    <select id="borrow_perPage" name="borrow_perPage" class="form-select form-select-sm fs-4 fw-bold" style="width:120px">
+                        <option value="15">15</option>
+                        <option value="25">25</option>
+                        <option value="40">40</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="borrow_OrderDate" class="form-label mb-0 fs-4 fw-bold">排序</label>
+                    <select id="borrow_OrderDate" name="borrow_OrderDate" class="form-select form-select-sm fs-4 fw-bold" >
+                        <option value="PubDate">出版日期</option>
+                    </select>
+                </div>
+                <!-- 排序方向 -->
+                <div>
+                    <label for="borrow_orderBy" class="form-label mb-0 fs-4 fw-bold">方向</label>
+                    <select id="borrow_orderBy" name="borrow_orderBy" class="form-select form-select-sm fs-4 fw-bold" style="width:100px">
+                        <option value="desc">遞減（新到舊）</option>
+                        <option value="asc">遞增（舊到新）</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+        <div id="BookContent" class="mt-2">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+</div>
+

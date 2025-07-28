@@ -1,0 +1,36 @@
+﻿@using test2.Areas.Frontend.Models
+@model Guest
+
+@{
+    Layout = "~/Areas/Frontend/Views/Shared/_Layout/_LoginM.cshtml";
+}
+
+<section id="sec1" class="m-0">
+    <div class="mb-3" style="color: var(--c-black-075);"><h1>圖書館管理系統</h1></div>
+    <div id="box_loginM">
+        <form asp-area="Frontend" asp-controller="Access" asp-action="AccessCardM" method="post">
+            <div class="row" style="align-items: center">
+                <div class="col-12 col-md-8 mx-1">
+                    <div class="mb-3 form-group d-flex align-items-center">
+                        <label asp-for="Account" class="me-2 mb-0 text-nowrap">
+                            帳號 <i class="bi bi-person i_loginM"></i>
+                        </label>
+                        <input type="text" asp-for="Account" class="form-control" />
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                        <label asp-for="Password" class="me-2 mb-0 text-nowrap">
+                            密碼 <i class="bi bi-key i_loginM"></i>
+                        </label>
+                        <input type="password" asp-for="Password" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-3" id="box_btn">
+                    <button type="submit" class="btn mt-0" id="btn_loginM">管理者登入</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="mt-3" style="height: 1.25rem"><div asp-validation-summary="ModelOnly" class="text-danger d-inline" style="font-size: 1.25rem;"></div></div>
+
+    @await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_tree.cshtml")
+</section>

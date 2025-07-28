@@ -1,0 +1,52 @@
+﻿@model test2.Areas.Frontend.Models.ViewModels.HomeIndexViewModel;
+
+@{
+    // 公告類別對應的 badge 顏色
+    var typeBadges = new Dictionary<int, string>
+    {
+        { 1, "bg-info text-dark" },    // 一般公告
+        { 2, "bg-success text-white" }, // 招標公告
+        { 3, "bg-danger text-white" },  // 休館公告
+        { 4, "bg-warning text-dark" }   // 徵才公告
+    };
+}
+
+<div class="table-responsive">
+    <table class="table table-hover mb-0">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th class="col-9">標題</th>
+                <th class="col-3 text-end">發佈日期</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Announcements != null && Model.Announcements.Any())
+            {
+                foreach (var announcement in Model.Announcements)
+                {
+                    <tr>
+                        <td style="cursor:pointer">
+                            <span class="badge @(typeBadges.GetValueOrDefault(announcement.AnnouncementTypeId, "bg-secondary")) me-2">
+                                @(announcement.AnnouncementType?.AnnouncementType1 ?? "未知")
+                            </span>
+                            <span>
+                                @announcement.AnnouncementTitle
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            @announcement.Date.ToString("yyyy-MM-dd")
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2" class="text-center">目前沒有公告。</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div id="partialMeta" data-total-pages="@Model.TotalPages" data-current-page="@Model.CurrentPage" data-current-type="@Model.CurrentType"></div>

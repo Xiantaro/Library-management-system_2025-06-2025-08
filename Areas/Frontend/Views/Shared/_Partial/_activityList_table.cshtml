@@ -1,0 +1,125 @@
+﻿@model test2.Areas.Frontend.Models.ViewModels.ActivityPagedViewModel
+
+<div class="activity-table-container-bs">
+    <table class="table activity-table-bs">
+        <thead>
+            <tr>
+                <th>標題</th>
+                <th>活動起訖</th>
+                <th>適用對象</th>
+                <th>類別</th>
+                <th>報名</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var activity in Model.Activities)
+            {
+                <tr>
+                    <td>@activity.ActivityTitle</td>
+                    <td>
+                        @activity.StartDate.ToString("yyyy/MM/dd HH:mm") ~ @activity.EndDate.ToString("yyyy/MM/dd HH:mm")
+                        @* 或者更簡潔，如果年份都在同一年可以省略 *@
+                        @* @activity.StartDate.ToString("MM/dd") ~ @activity.EndDate.ToString("MM/dd") *@
+                    </td>
+                    <td>@(activity.Audience?.Audience1 ?? "尚無適用對象")</td>
+                    <td><span class="badge">@(activity.ActivityType?.ActivityType1 ?? "尚無活動類別")</span></td>
+                    <td>
+                        @* ====== 報名按鈕邏輯優化 ====== *@
+                        @{
+                            // 計算目前時間是否在報名區間內
+                            bool isInRegistrationPeriod = (DateTime.Now >= activity.StartDate && DateTime.Now <= activity.EndDate);
+                            string buttonClass = "btn btn-sm btn-primary register-activity-btn"; // 統一個class給JS監聽，可以調整btn-sm和btn-info
+                            string buttonText = "點我報名";
+                            string disabledAttribute = ""; // 預設不禁用
+
+                            if (!isInRegistrationPeriod) // 不在報名時間內
+                            {
+                                buttonText = "無法報名";
+                                disabledAttribute = "disabled";
+                            }
+                            else if (activity.Capacity == -1) // 無需報名 (特殊值)
+                            {
+                                buttonText = "無需報名";
+                                disabledAttribute = "disabled";
+                            }
+                            else if (activity.Capacity == 0) // 名額已滿
+                            {
+                                buttonText = "名額已滿";
+                                disabledAttribute = "disabled";
+                            }
+                            else // activity.Capacity > 0 且在報名時間內 (可以報名)
+                            {
+                                // 這是可以報名的情況，保持預設的 "點我報名" 和不禁用
+                            }
+                        }
+
+                        <button type="button"
+                                class="@buttonClass"
+                                data-activity-id="@activity.ActivityId" @* <--- 關鍵：綁定活動ID *@
+                                @Html.Raw(disabledAttribute)>
+                            @* <--- 應用disabled屬性 *@
+                            @buttonText
+                        </button>
+                        @* ============================== *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@* 確保這個 partialMeta div 在主頁面載入後，JS 可以讀取到 *@
+<div id="partialMeta" data-total-pages="@Model.TotalPages" data-current-page="@Model.CurrentPage" style="display:none;"></div>
+
+@section Styles {
+    <style>
+        .activity-table-bs td {
+            white-space: nowrap; /* 確保內容不換行 */
+            overflow: hidden; /* 隱藏超出部分 */
+            text-overflow: ellipsis; /* 超出部分顯示省略號 */
+            /* 加一個彈性的最小寬度，避免內容被擠壓太嚴重 */
+            min-width: 80px; /* 預設最小寬度，針對普通欄位 */
+        }
+
+            /* 針對「標題」欄位，通常需要更多空間 */
+            .activity-table-bs td:nth-child(1) {
+                min-width: 200px; /* 給標題欄多一點空間 */
+                /* 你也可以設定 max-width: 300px; 如果希望標題在超過後才顯示省略號 */
+                /* width: 30%; */ /* 也可以嘗試使用百分比來分配寬度 */
+            }
+
+            /* 針對「活動起訖」欄位 */
+            .activity-table-bs td:nth-child(2) {
+                min-width: 180px; /* 確保日期時間有足夠空間 */
+            }
+
+            /* 針對「類別」欄位 (Badge) */
+            .activity-table-bs td:nth-child(4) {
+                min-width: 80px; /* 確保類別有足夠空間 */
+            }
+
+            /* 針對「剩餘名額」欄位 */
+            .activity-table-bs td:nth-child(5) {
+                min-width: 60px; /* 名額通常數字短，可以小一點 */
+                text-align: center; /* 讓數字居中更好看 */
+            }
+
+            /* 針對「操作」欄位 (按鈕) */
+            .activity-table-bs td:last-child { /* 最後一個 td 是操作欄位 */
+                white-space: nowrap; /* 確保td內容不換行 */
+                overflow: hidden;
+                text-overflow: ellipsis;
+                min-width: 120px; /* 確保操作欄有足夠空間放置按鈕 */
+            }
+
+        .activity-table-bs .register-activity-btn {
+            white-space: nowrap; /* 確保按鈕內文字不換行 */
+            /* display: inline-block; */ /* 確保 width 和 height 生效 */
+            padding: .25rem .5rem; /* 縮小按鈕內邊距 */
+            font-size: .875rem; /* 縮小按鈕字體大小 */
+            line-height: 1.5; /* 調整行高 */
+            /* 讓按鈕的寬度彈性一點，但有個上限 */
+            max-width: 110px; /* 防止按鈕過寬 */
+        }
+    </style>
+}

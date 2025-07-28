@@ -1,0 +1,6 @@
+﻿body.modal-open {
+    /* 將 Bootstrap 添加到 body 上的 padding-right 強制重設為 0 */
+    padding-right: 0 !important;
+    /* 如果不需要隱藏滾動條，確保沒有 overflow: hidden; 或用 unset 把它取消 */
+    overflow: unset !important;
+}

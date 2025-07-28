@@ -1,0 +1,24 @@
+﻿.bi-circle-fill:hover {
+    color: black !important;
+}
+
+#editPasswordBtn,
+#editPhoneBtn {
+    background-color: var(--c-blue1--075);
+    color: white;
+}
+
+#confirmPasswordBtn,
+#savePasswordBtn,
+#savePhoneBtn {
+    background-color: var(--c-green2-100);
+    color: white;
+}
+
+.bi-facebook:hover {
+    color: white !important;
+}
+
+#btn_google:hover {
+    background-color: rgb(248, 249, 250);
+}

@@ -1,0 +1,85 @@
+﻿/* 覆寫 bootstrap btn */
+
+.btn-primary {
+    background-color: var(--c-green2-100);
+    border-color: var(--c-green2-100);
+}
+
+    .btn-primary:hover {
+        background-color: #5cb85c;
+        border-color: #e9f0e6;
+        /*    --bs-btn-hover-bg: #3d793d;
+        --bs-btn-active-bg: #212529;
+        --bs-btn-active-border-color: #3d793d;*/
+    }
+
+/* 表格樣式調整 */
+.activity-table-bs {
+    width: 100%;
+    border-collapse: separate; /* 為了圓角和陰影 */
+    border-spacing: 0 10px; /* 增加行間距 */
+    margin-top: 20px;
+}
+
+    .activity-table-bs thead th {
+        background-color: #f8f9fa;
+        color: #333;
+        font-weight: bold;
+        padding: 15px 20px;
+        text-align: left;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .activity-table-bs tbody tr {
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease-in-out;
+        cursor: pointer; /* 讓滑鼠移過去有可點擊的感覺 */
+    }
+
+        .activity-table-bs tbody tr:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+    .activity-table-bs tbody td {
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+        vertical-align: middle; /* 垂直置中 */
+    }
+
+    .activity-table-bs tbody tr:last-child td {
+        border-bottom: none; /* 最後一列不需要底線 */
+    }
+
+    /* 讓表格頭尾有圓角 */
+    .activity-table-bs thead tr:first-child th:first-child {
+        border-top-left-radius: 10px;
+    }
+
+    .activity-table-bs thead tr:first-child th:last-child {
+        border-top-right-radius: 10px;
+    }
+
+    .activity-table-bs tbody tr:last-child td:first-child {
+        border-bottom-left-radius: 10px;
+    }
+
+    .activity-table-bs tbody tr:last-child td:last-child {
+        border-bottom-right-radius: 10px;
+    }
+
+    /* 特殊樣式：類別 Badge */
+    .activity-table-bs .badge {
+        background-color: #e9ecef !important;
+        color: #495057 !important;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.85em;
+        font-weight: normal;
+    }
+
+/* 確保圖片式容器在顯示條列式時是隱藏的 */
+.activity-cards-container-bs {
+    display: none;
+}

@@ -1,0 +1,32 @@
+﻿.btn_cFav {
+    background-color: var(--c-green2-100);
+}
+
+    .btn_cFav:focus {
+        background-color: var(--c-green2-100);
+        color: white;
+    }
+
+.btn_dFav {
+    background-color: var(--c-red----100);
+}
+
+    .btn_dFav:focus {
+        background-color: var(--c-red----100);
+        color: white;
+    }
+
+.btn-open-comment {
+    background-color: var(--c-blue1--075);
+}
+
+    .btn-open-comment:focus {
+        background-color: var(--c-blue1--075);
+        color: white;
+    }
+
+    .btn_cFav:hover,
+    .btn_dFav:hover,
+    .btn-open-comment:hover {
+        color: white;
+    }

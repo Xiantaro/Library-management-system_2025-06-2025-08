@@ -1,0 +1,14 @@
+﻿@{
+    var userId = ViewData["Id"];
+}
+
+<form asp-area="Frontend" asp-controller="Home" asp-action="CreateFavorite" method="post" class="d-none">
+    <input type="text" name="idInput3" value="@userId" />
+    <input id="collectionIdInput1" type="text" name="collectionIdInput1" />
+    <button type="submit" id="btn_cFavS"></button>
+</form>
+<form asp-area="Frontend" asp-controller="Home" asp-action="DeleteFavorite" method="post" class="d-none">
+    <input type="text" name="idInput4" value="@userId" />
+    <input id="collectionIdInput2" type="text" name="collectionIdInput2" />
+    <button type="submit" id="btn_dFavS"></button>
+</form>

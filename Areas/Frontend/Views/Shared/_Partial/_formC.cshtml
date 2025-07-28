@@ -1,0 +1,10 @@
+﻿@{
+    var userId = ViewData["Id"];
+}
+
+<form asp-area="Frontend" asp-controller="Home" asp-action="UpdateComment" method="post" class="d-none">
+    <input type="text" id="borrowIdInput" name="borrowIdInput" />
+    <input type="text" id="rate" name="rate" />
+    <textarea id="comment" name="comment"></textarea>
+    <button type="submit" id="btn_comment"></button>
+</form>

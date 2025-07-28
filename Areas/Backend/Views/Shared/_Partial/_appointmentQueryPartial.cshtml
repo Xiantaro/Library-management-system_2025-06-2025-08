@@ -1,0 +1,70 @@
+﻿
+
+<div class="row mt-1">
+    <div class="col">
+        <h1 class="fw-bold">預約管理</h1>
+        <hr />
+        <form id="appointmenSearch" class="d-flex justify-content-between  flex-wrap gap-3">
+            <div class="d-flex flex-wrap gap-3">
+                <div>
+                    <label class="form-label mb-0 fs-4 fw-bold" for="appointment_reservationId">預約編號</label>
+                    <input name="appointment_reservationId" id="appointment_reservationId" type="number" class="form-control form-control-sm fs-5 fw-bold" placeholder="All"  style="width: 100px; height: 60px" />
+                </div>
+                <div>
+                    <label class="form-label mb-0 fs-4 fw-bold" for="appointment_bookCode">書籍編號</label>
+                    <input name="appointment_bookCode" id="appointment_bookCode" type="text" class="form-control form-control-sm fs-5 fw-bold" placeholder="All"  style="width: 270px; height: 60px" maxlength="21"/>
+                </div>
+                <div>
+                    <label class="form-label mb-0 fs-4 fw-bold" for="appointment_UserID">預約者ID</label>
+                    <input name="appointment_UserID" id="appointment_UserID" type="number" class="form-control form-control-sm fs-5 fw-bold" placeholder="All" style="width: 100px; height: 60px" />
+                </div>
+                <div>
+                    <label for="appointment_initDate" class="form-label mb-0 fs-4 fw-bold">預約日期</label>
+                    <input id="appointment_initDate" name="appointment_initDate" type="date" class="form-control form-control-sm fs-5 fw-bold" value="@DateTime.Now.AddMonths(-2)" style="width: 160px; height: 60px" />
+                </div>
+                <div>
+                    <label for="appointment_lastDate" class="form-label mb-0 fs-4 fw-bold">至</label>
+                    <input id="appointment_lastDate" name="appointment_lastDate" class="form-control form-control-sm fs-5 fw-bold" type="date" max="@DateTime.Now" value="@DateTime.Now"  style="width: 160px; height: 60px"/>
+                </div>
+                <div>
+                    <label for="appointment_state" class="form-label mb-0 fs-4 fw-bold">預約狀態</label>
+                    <select id="appointment_state" name="appointment_state" class="form-select form-select-sm fs-5 fw-bold" style="width: 140px; height: 60px">
+                        <option value="ALL">全部</option>
+                        <option value="已預約">已預約</option>
+                        <option value="已取書">已取書</option>
+                        <option value="可取書">可取書</option>
+                        <option value="取消預約">取消預約</option>
+                    </select>
+                </div>
+                <div class="d-flex align-items-end" >
+                    <button id="appointment_select" type="button" class="btn btn-sm btn-lg fs-2 fw-bold text-white" style="background-color: #2E7D32 ">查詢</button>
+                </div>
+                <div  class="d-flex align-items-end">
+                    <button id="appointment_clear" type="button" class="btn btn-secondary btn-sm btn-lg fs-2 fw-bold" >清除</button>
+                </div>
+            </div>
+            <div class="d-flex flex-row bd-highlight">
+                <div class=" mx-1">
+                    <label for="appointment_perPage" class="form-label mb-0 fs-4 fw-bold">筆數</label>
+                    <select id="appointment_perPage" name="appointment_perPage" valus="10" class="form-select form-select-sm fs-5 fw-bold" style="width: 80px; height: 60px">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="appointment_orderDate" class="form-label mb-0 fs-4 fw-bold">排序</label>
+                    <select id="appointment_orderDate" name="appointment_orderDate" class="form-select form-select-sm fs-5 fw-bold" style="width: 90px; height: 60px">
+                        <option value="desc">遞減（新到舊）</option>
+                        <option value="asc">遞增（舊到新）</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+        <div id="AppointmentContent" class="mt-3">
+            <h1 class="text-danger ">      加載中....</h1>
+        </div>
+    </div>
+</div>
+
+

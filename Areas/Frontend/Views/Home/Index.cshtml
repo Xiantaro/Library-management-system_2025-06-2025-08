@@ -1,0 +1,650 @@
+﻿@model test2.Areas.Frontend.Models.ViewModels.HomeIndexViewModel
+
+@{
+    // 公告類別對應的 badge 顏色
+    var typeBadges = new Dictionary<int, string>
+    {
+        { 1, "bg-info text-dark" },    // 一般公告
+        { 2, "bg-success text-white" }, // 招標公告
+        { 3, "bg-danger text-white" },  // 休館公告
+        { 4, "bg-warning text-dark" }   // 徵才公告
+    };
+}
+
+@await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_modal.cshtml")
+
+<div id="main-container">
+    <div id="main-slider" class="d-flex flex-column justify-content-center">
+        <button class="carousel-control-btn my-carousel-control-prev" id="prevBtn">❮</button>
+        <div class="carousel-spinner" id="carouselSpinner">
+            @if ( Model.Activities != null)
+            {
+                for( int i = 0; i < 3; i++)
+                {
+                    <div class="my-carousel-item">
+                        <a href="@Url.Action("ActivityInfo", "Home", new { activityTitle = Model.Activities[i].ActivityTitle })" >
+                            <img src="data:image/jpeg;base64,@Model.Activities[i].ActivityImgBase64" class="d-block w-100" alt="活動圖片">
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                for( int i = 0; i < 3; i++)
+                {
+                    <div class="my-carousel-item">
+                        <p class="text-center">目前沒有圖片</p>
+                    </div>
+                }
+            }
+            
+        </div>
+        <button class="carousel-control-btn my-carousel-control-next" id="nextBtn">❯</button>
+    </div>
+    <a href="/Frontend/Home/Activity" class="text-center btn btn-primary btn-lg w-100">查看所有活動</a>
+
+
+    <hr />
+
+    <div id="announcements-section" class="section d-flex flex-column justify-content-center">
+        <div>
+            <h2 class="text-center mb-4">公佈欄</h2>
+
+            <div class="row mb-4 align-items-center">
+                <div class="col-md-3 ">
+                    <select class="form-select type-selector-container">
+                        <option selected value="">==全部分類==</option> @* value="" 表示選擇全部 *@
+                        @if (Model.AnnouncementTypes != null)
+                        {
+                            foreach (var type in Model.AnnouncementTypes)
+                            {
+                                <option value="@type.AnnouncementType1">@type.AnnouncementType1</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <input id="search-input" type="text" class="form-control" placeholder="關鍵字查詢">
+                </div>
+                <div class="col-md-3">
+                    <button id="search-btn" class="btn btn-primary w-100"><i class="bi bi-search"></i> 查詢</button>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div id="announcementListContainer">
+                    @await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_announcementList.cshtml")
+                </div>
+
+                <div class="pagination-container mb-3">
+                    <div class="pagination-info me-3">
+                        <span>第</span> <span>1</span> / <span>1</span> <span>頁</span>
+                    </div>
+                    <div class="pagination-buttons">
+                        <button type="button" class="btn page-control-btn disabled">
+                            <i class="bi bi-caret-left-fill"></i>
+                        </button>
+                        @for (int i = 1; i <= 1; i++)
+                        {
+                            <button type="button" class="btn @(i == 1 ? "active" : null)">@i</button>
+                        }
+                        <button type="button" class="btn page-control-btn">
+                            <i class="bi bi-caret-right-fill"></i>
+                        </button>
+                    </div>
+                    <div class="pagination-select-page">
+                        <label for="page-selector">跳至</label>
+                        <select class="form-select" id="page-selector">
+                            @for (int i = 1; i <= 1; i++)
+                            {
+                                if (i == 1)
+                                {
+                                    <option value="1" selected>1</option>
+                                    continue;
+                                }
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                        <span class="ms-2">頁</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <div id="NewBook-section" class="section d-flex flex-column justify-content-center">
+    <div>
+        <h2 class="text-center mb-4">新書推薦</h2>
+        <div class="custom-carousel-wrapper">
+            <div id="newBooksCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                        @{
+                            // 總共有幾頁輪播 (每頁3本書)
+                            int totalNewBookPages = 2;
+                            for (int i = 0; i < totalNewBookPages; i++)
+                        {
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
+                                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                                        @foreach (var book in Model.NewBooks.Skip(i * 3).Take(3))
+                                        {
+                                            <div class="col">
+                                                <div class="card shadow-sm d-flex flex-column">
+                                                    <div class="book-image-ratio-container">
+                                                        <img src="data:image/*; base64, @(book?.Collection?.CollectionImg != null ? Convert.ToBase64String(book.Collection.CollectionImg) : string.Empty)"
+                                                             class="book-image"
+                                                             alt="@book?.Collection?.Title 封面"
+                                                             style="cursor: pointer;">
+                                                    </div>
+                                                    <div class="card-body d-flex flex-column">
+                                                        <h5 class="card-title mt-auto">@book?.Collection?.Title</h5>
+                                                        <p class="card-text text-muted">作者：@(book?.Collection?.Author?.Author1 ?? "佚名")</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                        }
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#newBooksCarousel"
+                        data-bs-slide="prev">
+                    <span class="newbook-carousel-prew-arrow carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+                    <span class="visually-hidden">上一頁</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#newBooksCarousel"
+                        data-bs-slide="next">
+                    <span class="newbook-carousel-next-arrow carousel-control-next-icon bg-dark rounded-circle p-3 " aria-hidden="true"></span>
+                    <span class="visually-hidden">下一頁</span>
+                </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <hr />
+
+    <div id="popularbook-section" class="section d-flex flex-column justify-content-center">
+        <div>
+            <h2 class="text-center mb-4">熱門書籍推薦</h2>
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+                @if (Model.PopularBooks != null)
+                {
+                    @foreach (var book in Model.PopularBooks)
+                    {
+                        <div class="col">
+                            <div class="flip-card-container">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        @* 這裡的圖片路徑需要根據實際儲存方式來調整 *@
+                                        <img src="data:image/*; base64, @(book?.Collection?.CollectionImg != null ? Convert.ToBase64String(book.Collection.CollectionImg) : string.Empty)" class="card-img-top" alt="@book?.Collection?.Title">
+                                        <h5 class="card-title">@book?.Collection?.Title</h5>
+                                        <p class="card-text text-muted">作者：@(book?.Collection?.Author?.Author1 ?? "佚名")</p>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h5 class="card-title">@book?.Collection?.Title</h5>
+                                        <p><strong>作者：</strong>@(book?.Collection?.Author?.Author1 ?? "佚名")</p>
+                                        @if (book?.Collection?.CollectionDesc?.Length > 100 && book.Collection?.CollectionDesc != null)
+                                        {
+                                            string? describe = book?.Collection?.CollectionDesc != null ? book?.Collection?.CollectionDesc.Substring(0, 100) : string.Empty;
+                                            <p><strong>簡介：</strong>@describe...</p>
+                                        }
+                                        else
+                                        {
+                                            <p><strong>簡介：</strong>@book?.Collection?.CollectionDesc</p>
+                                        }
+                                        
+                                        <p><strong>ISBN：</strong>@book?.Collection?.Isbn</p>
+                                        <div class="d-flex justify-content-center w-100">
+                                            <button class="borrow-book-btn btn btn-primary mt-3">詳細頁面</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <hr />
+
+   <div id="FAQ" class="d-flex flex-column justify-content-sm-center">
+        <div>
+            <h2 class="text-center mb-4">常見問題 (FAQ)</h2>
+            <div class="faq-list">
+                <div class="faq-item shadow-sm mb-2 p-3">
+                    <h3 class="h5">Q1：圖書館開放時間是？</h3>
+                    <div>
+                        <strong>週二至週六 09:00 - 21:00，週日至週一 09:00 - 17:00。</strong> 國定假日及特定休館日請參考本館網站公告。
+                    </div>
+                </div>
+                <div class="faq-item shadow-sm mb-2 p-3">
+                    <h3 class="h5">Q2：如何辦理借書證？</h3>
+                    <div>
+                        請攜帶身分證明文件（身分證、駕照或健保卡），至櫃台填寫申請表即可免費辦理。未滿12歲兒童需由法定代理人陪同辦理。
+                    </div>
+                </div>
+                <div class="faq-item shadow-sm mb-2 p-3">
+                    <h3 class="h5">Q3：借閱期限和數量有限制嗎？</h3>
+                    <div>
+                        每張借書證最多可借閱30本書籍，借閱期限為30天。部分熱門書籍可能借閱期限較短或無法續借，請留意借閱規定。
+                    </div>
+                </div>
+                <div class="faq-item shadow-sm mb-2 p-3">
+                    <h3 class="h5">Q4：可以線上預約書籍嗎？</h3>
+                    <div>
+                        是的，您可登入本館網站會員帳號，查詢欲借閱的書籍並進行線上預約。書籍到館後將以簡訊通知您前來取書。
+                    </div>
+                </div>
+                <div class="faq-item shadow-sm mb-2 p-3">
+                    <h3 class="h5">Q5：圖書館有提供電子書服務嗎？</h3>
+                    <div>
+                        本館提供豐富的電子書資源，會員可透過本館網站或專屬APP登入，免費借閱各種電子書刊。詳細使用說明請參考電子書專區。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section id="tree-section">
+        @await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_tree.cshtml")
+    </section>
+
+</div>
+
+@* Modal 的 HTML 結構 *@
+<div class="modal fade" id="registrationMessageModal" tabindex="-1" aria-labelledby="registrationMessageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registrationMessageModalLabel">註冊結果</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="MessageContent"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous">
+    </script>
+
+    <script>
+        let currentType = '@Model.CurrentType';
+        let currentPage = @Model.CurrentPage;
+        let totalPages = @Model.TotalPages;
+        let pageSize = @Model.PageSize;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const prevPageBtn = document.querySelector('.page-control-btn:nth-child(1)');
+            const nextPageBtn = document.querySelector('.page-control-btn:last-child');
+            const pageButtons = document.querySelectorAll('.pagination-buttons .btn:not(.page-control-btn)'); // 中間的頁碼按鈕
+            const pageSelector = document.getElementById('page-selector'); // 跳至頁碼的下拉選單
+            const typeSelector = document.querySelector('.type-selector-container');
+            const searchInput = document.getElementById('search-input')
+            const searchBtn = document.getElementById('search-btn');
+
+            // 找出頁碼按鈕原本的 CSS 隔離 ID
+            let cssScopeId = '';
+            if (pageButtons.length > 0) { // 確保 pageButtons 有元素
+                Array.from(pageButtons[0].attributes).forEach( attr => {
+                    if ( attr.name.startsWith('b-') ){
+                        cssScopeId = attr.name;
+                    }
+                })
+            }
+
+            // 初始化監聽換頁按鈕的點擊事件
+
+            if (prevPageBtn) {
+                prevPageBtn.addEventListener('click', async () => {
+                    if ( currentPage > 1 ){
+                        currentPage--;
+                        await updateAnnouncementList(currentPage, pageSize, currentType);
+                        updatePaginationButtons();
+                    }
+                })
+            }
+
+            if (nextPageBtn) {
+                nextPageBtn.addEventListener('click', async () => {
+                    if ( currentPage < totalPages ){
+                        currentPage++;
+                        await updateAnnouncementList(currentPage, pageSize, currentType);
+                        updatePaginationButtons();
+                    }
+                })
+            }
+
+            // 初始化監聽搜尋欄的 Enter 事件
+
+            if (searchInput){
+                searchInput.addEventListener('keydown', async (event) => {
+                    if (event.key === 'Enter'){
+                        const searchQuery = searchInput.value;
+                        await updateAnnouncementList(1, pageSize, currentType, searchQuery);
+                        updatePaginationButtons();
+                    }
+                })
+            }
+
+            // 初始化監聽搜尋按鈕的點擊事件
+
+            if (searchBtn){
+                searchBtn.addEventListener('click', async () =>{
+                    const searchQuery = searchInput.value;
+                    await updateAnnouncementList(1, pageSize, currentType, searchQuery);
+                    updatePaginationButtons();
+                })
+            }
+
+            // 初始化監聽跳頁下拉選單
+
+            if (pageSelector) {
+                pageSelector.addEventListener('change', async (event) => {
+                    const page = parseInt(event.target.value);
+                    if ( page !== currentPage ) {
+                        currentPage = page;
+                        await updateAnnouncementList(currentPage, pageSize, currentType);
+                        updatePaginationButtons();
+                    }
+                });
+            }
+
+            // 監聽頁碼按鈕點擊事件 (這裡需要重新綁定，因為按鈕會重新生成)
+            // 初始化時先綁定一次，後面更新時在 updatePaginationButtons 裡重新綁定
+            document.querySelector(".pagination-buttons").addEventListener('click', async (event) => {
+                if (event.target.classList.contains('btn') && !event.target.classList.contains('page-control-btn')) {
+                    const page = parseInt(event.target.textContent);
+                    if (page !== currentPage) {
+                        currentPage = page;
+                        await updateAnnouncementList(currentPage, pageSize, currentType);
+                        updatePaginationButtons();
+                    }
+                }
+            });
+
+
+            // 初始化監聽切換只顯示特定公告類別的下拉選單
+
+            if (typeSelector) {
+                typeSelector.addEventListener('change', async (event) => { // 監聽 change 事件
+                    const selectedType = event.target.value; // 取得選中的 value
+
+                    if(currentType !== selectedType){
+                        currentType = selectedType;
+                        currentPage = 1; // 切換分類時，把頁碼重設為 1
+                        await updateAnnouncementList(currentPage, pageSize, currentType);
+                        updatePaginationButtons(); // 更新分頁按鈕狀態
+                    }
+                });
+            }
+            
+            // 更新分頁資訊跟分頁按鈕狀態
+
+            function updatePaginationButtons() {
+
+            // 更新顯示「第 N / M 頁」的資訊
+            const paginationInfo = document.querySelector('.pagination-info');
+            if (paginationInfo) {
+                if (totalPages === 0) {
+                    paginationInfo.innerHTML = `<span>第 0 </span> <span> / </span><span>${totalPages}</span> <span>頁</span>`;
+                } else {
+                    paginationInfo.innerHTML = `<span>第</span> <span>${currentPage}</span> / <span>${totalPages}</span> <span>頁</span>`;
+                }
+            }
+
+            // 更新上一頁/下一頁按鈕的 disabled 狀態
+            if (prevPageBtn) {
+                if (totalPages === 0 || currentPage === 1) {
+                    prevPageBtn.classList.add('disabled');
+                } else {
+                    prevPageBtn.classList.remove('disabled');
+                }
+            }
+            if (nextPageBtn) {
+                if (totalPages === 0 || currentPage === totalPages) {
+                    nextPageBtn.classList.add('disabled');
+                } else {
+                    nextPageBtn.classList.remove('disabled');
+                }
+            }
+
+            // 更新頁碼按鈕的狀態
+            const pageBtnContainer = document.querySelector(".pagination-buttons");
+
+            if (pageBtnContainer) {
+                // 移除所有頁碼按鈕 (除了前後控制按鈕)
+                Array.from(pageBtnContainer.children).forEach(child => {
+                    if (!child.classList.contains('page-control-btn')) {
+                        child.remove();
+                    }
+                });
+
+                // --- 限制顯示頁碼數量 ---
+                const maxPagesToShow = 5; // 可以調整這個數字，例如顯示 5 個頁碼按鈕
+                let startPage, endPage;
+
+                if (totalPages <= maxPagesToShow) {
+                    // 如果總頁數不多，直接顯示所有頁碼
+                    startPage = 1;
+                    endPage = totalPages;
+                } else {
+                    // 計算顯示範圍
+                    const half = Math.floor(maxPagesToShow / 2);
+                    startPage = Math.max(1, currentPage - half);
+                    endPage = Math.min(totalPages, currentPage + half);
+
+                    // 調整邊界情況
+                    if (endPage - startPage + 1 < maxPagesToShow) {
+                        if (startPage === 1) {
+                            endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+                        } else if (endPage === totalPages) {
+                            startPage = Math.max(1, totalPages - maxPagesToShow + 1);
+                        }
+                    }
+                }
+
+                // 重新生成頁碼按鈕
+                // 先處理第一頁和「...」
+                if (startPage > 1) {
+                    const firstPageBtn = createPaginationButton(1, currentPage);
+                    pageBtnContainer.insertBefore(firstPageBtn, nextPageBtn);
+                    if (startPage > 2) {
+                        const ellipsisStart = createEllipsisButton();
+                        pageBtnContainer.insertBefore(ellipsisStart, nextPageBtn);
+                    }
+                }
+
+                // 產生中間的頁碼按鈕
+                for (let i = startPage; i <= endPage; i++) {
+                    const btn = createPaginationButton(i, currentPage);
+                    pageBtnContainer.insertBefore(btn, nextPageBtn);
+                }
+
+                // 再處理「...」和最後一頁
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        const ellipsisEnd = createEllipsisButton();
+                        pageBtnContainer.insertBefore(ellipsisEnd, nextPageBtn);
+                    }
+                    const lastPageBtn = createPaginationButton(totalPages, currentPage);
+                    pageBtnContainer.insertBefore(lastPageBtn, nextPageBtn);
+                }
+
+            } else {
+                console.error("找不到包含 pagination buttons 的 Html 元素，請確認 Html 結構");
+            }
+
+            // 更新跳頁下拉選單的選項狀態
+            const pageSelectorContainer = document.getElementById('page-selector');
+            if (pageSelectorContainer) {
+                // 清空頁碼選項
+                Array.from(pageSelectorContainer.children).forEach(option => {
+                    option.remove();
+                });
+
+                // 重新生成頁碼選項
+                if (totalPages === 0) {
+                    const option = document.createElement('option');
+                    option.setAttribute('selected', '');
+                    option.textContent = 0;
+                    pageSelectorContainer.append(option);
+                } else {
+                    for (let i = 1; i <= totalPages; i++) {
+                        const option = document.createElement('option');
+                        option.setAttribute('value', i);
+                        if (i === currentPage) {
+                            option.setAttribute('selected', '');
+                        }
+                        option.textContent = i;
+                        pageSelectorContainer.append(option);
+                    }
+                }
+            }
+        }
+
+        // 輔助函數：創建頁碼按鈕
+        function createPaginationButton(pageNumber, currentPage) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.classList.add('btn');
+            if (pageNumber === currentPage) {
+                btn.classList.add('active');
+            }
+            // 加上 CSS 隔離 ID
+            if (cssScopeId) { // 假設 cssScopeId 在全局或父作用域中定義
+                btn.setAttribute(cssScopeId, '');
+            }
+            btn.textContent = pageNumber;
+            return btn;
+        }
+
+        // 輔助函數：創建省略號按鈕
+        function createEllipsisButton() {
+            const ellipsis = document.createElement('span');
+            ellipsis.classList.add('pagination-ellipsis'); // 可以為這個元素添加樣式
+            ellipsis.textContent = '...';
+            // 加上 CSS 隔離 ID
+            if (cssScopeId) {
+                ellipsis.setAttribute(cssScopeId, '');
+            }
+            return ellipsis;
+        }
+
+            // 初次載入時更新分頁按鈕狀態
+            updatePaginationButtons();
+
+        });
+
+        /// <summary>
+        /// 透過 AJAX POST 請求下一頁(或上一頁)活動列表的資料。
+        /// </summary>
+        /// <param name="pageNumber">當前頁碼</param>
+        /// <param name="pageSize">每頁顯示數量</param>
+        /// <param name="type">公告類別ID (數字，或空字串表示全部)</param>
+        /// <param name="searchQuery">關鍵字查詢</param>
+        async function updateAnnouncementList(pageNumber, pageSize, displayType, searchQuery = null) {
+            try {
+                // 1. 準備 POST 請求的資料，包含當前的分頁資訊
+
+                const formData = new FormData();
+                formData.append('pageNumber', pageNumber);
+                formData.append('pageSize', pageSize);
+                formData.append('displayType', displayType);
+                formData.append('searchQuery', searchQuery);
+
+                // 2. 發送 POST 請求到 HomeController 的 updateAnnouncementList Action
+                const response = await fetch('/Frontend/Home/updateAnnouncementList', { // 修正路徑為 Home Controller
+                    method: 'POST',
+                    body: formData
+                });
+
+                // 3. 檢查回應是否成功
+                if (!response.ok) {
+                    const errorText = await response.text(); // 取得錯誤訊息
+                    throw new Error(`HTTP 錯誤! 狀態碼: ${response.status} - ${errorText}`);
+                }
+
+                // 4. 取得回傳的 HTML 內容
+                const newHtml = await response.text();
+
+                // 5. 更新頁面上的 PartialView 容器
+                const container = document.getElementById('announcementListContainer');
+
+                if (container) {
+                    container.innerHTML = newHtml;
+                    // 重新執行 PartialView 內部可能有的 script 標籤 (如果有的話)
+                    // 這部分通常不需要，因為 partial view 的 script 會在載入時執行，
+                    // 除非你的 partial view 內有需要 DOM 重新載入後才執行的新腳本
+                    Array.from(container.querySelectorAll("script"))
+                        .forEach(oldScript => {
+                            const newScript = document.createElement("script");
+                            Array.from(oldScript.attributes)
+                                .forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                            newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                            oldScript.parentNode.replaceChild(newScript, oldScript);
+                        });
+                } else {
+                    console.error("找不到 announcementListContainer 元素，請確認 HTML 結構。");
+                }
+
+                // 6. 更新 totalPages currentType 值
+                // 這裡要從 partial view 傳回來的資料中獲取最新的 totalPages 和 currentType
+                const partialMeta = document.getElementById('partialMeta');
+                if (partialMeta){
+                    const receivedTotalPages = partialMeta.dataset.totalPages;
+                    const receivedCurrentType = partialMeta.dataset.currentType;
+                    totalPages = parseInt(receivedTotalPages);
+                    currentType = receivedCurrentType === "" ? "" : receivedCurrentType; // 確保是空字串
+                }
+
+            } catch (error) {
+                console.error('更新公告列表時發生錯誤:', error);
+                alert(`更新公告列表失敗，錯誤訊息: ${error.message}`); // 顯示更詳細的錯誤訊息
+            }
+        }
+
+        // 從 TempData 取得旗標和訊息
+        var showModal = @((bool)(TempData["ShowModal"] ?? false) ? "true" : "false");
+        var result = "@Html.Raw((string)TempData["Result"] == "success" ? "success" : "fail")";
+        var resultMessage = "@Html.Raw(TempData["ResultMessage"] ?? "")";
+
+        if (showModal) {
+            // 從 TempData 取得旗標和訊息
+            var showModal = @((bool)(TempData["ShowModal"] ?? false) ? "true" : "false");
+            var result = "@Html.Raw((string)TempData["Result"] == "success" ? "success" : "fail")";
+            var resultMessage = "@Html.Raw(TempData["ResultMessage"] ?? "")";
+
+            if (showModal) {
+                if (result === "success"){
+                    $('#MessageContent').text(resultMessage); // 將訊息顯示在 Modal 內容中
+                    var myModal = new bootstrap.Modal(document.getElementById('registrationMessageModal'));
+                    myModal.show(); // 顯示 Modal
+                }
+                else if (result === "fail"){
+                    $('#MessageContent').text(resultMessage); // 將訊息顯示在 Modal 內容中
+                    var myModal = new bootstrap.Modal(document.getElementById('registrationMessageModal'));
+                    myModal.show(); // 顯示 Modal
+                }
+            }
+        }
+    </script>
+}

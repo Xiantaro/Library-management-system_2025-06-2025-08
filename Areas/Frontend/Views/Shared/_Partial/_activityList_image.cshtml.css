@@ -1,0 +1,82 @@
+﻿/* 覆寫 bootstrap btn */
+
+.btn-primary {
+    background-color: var(--c-green2-100);
+    border-color: var(--c-green2-100);
+}
+
+    .btn-primary:hover {
+        background-color: #5cb85c;
+        border-color: #e9f0e6;
+        /*    --bs-btn-hover-bg: #3d793d;
+        --bs-btn-active-bg: #212529;
+        --bs-btn-active-border-color: #3d793d;*/
+    }
+
+.activity-card-bs {
+    border: none;
+    /* 移除 Bootstrap 預設卡片邊框 */
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+    .activity-card-bs:hover {
+        transform: translateY(-5px);
+    }
+
+
+
+.card-image-bs {
+    height: 200px;
+    /* 固定圖片高度 */
+    object-fit: cover;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.activity-tags-bs .badge {
+    background-color: #f0f0f0 !important;
+    /* 確保背景色不會被覆蓋 */
+    color: #666 !important;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    font-weight: normal;
+    /* 讓標籤文字不要太粗 */
+}
+
+.register-btn-bs {
+    background-color: #007bff;
+    /* 報名按鈕顏色 */
+    border-color: #007bff;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 1em;
+}
+
+    .register-btn-bs:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .register-btn-bs.disabled {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        cursor: not-allowed;
+    }
+
+.more-activities-btn-bs {
+    background-color: #4CAF50;
+    /* 更多活動按鈕顏色 */
+    border-color: #4CAF50;
+    border-radius: 25px;
+    padding: 12px 25px;
+    font-size: 1.1em;
+}
+
+    .more-activities-btn-bs:hover {
+        background-color: #45a049;
+        border-color: #45a049;
+    }

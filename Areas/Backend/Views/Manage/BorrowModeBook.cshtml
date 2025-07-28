@@ -1,0 +1,20 @@
+﻿@model List<test2.Models.ManagementModels.ZhongXian.Borrow.BorrowBookInfomationDTO>
+
+<div class="my-auto">
+    @if (@Model[0].collectionImg != null) {<img src="data:image/*;base64, @(Convert.ToBase64String(Model[0].collectionImg!))" style="width:400px ;height:610px" alt="@Model[0].title" /> }
+</div>
+<table class="table table-hover table-borderless mx-3 my-auto table-dark align-middle" style="width: 100%; table-layout: fixed;">
+    <tr class="fs-3 fw-bold">
+        <td style="width:130px">書籍編號:</td>
+        <td style="width:400px" title="@Model[0].bookCode">@Model[0].bookCode</td>
+    </tr>
+    <tr class="fs-3 fw-bold"><td  style="width:100px">書籍名稱:</td><td style="max-width:400px" title="@Model[0].title">@Model[0].title</td></tr>
+    <tr class="fs-3 fw-bold"><td style="width:100px">作者: </td><td style="max-width:400px" title="@Model[0].author">@Model[0].author</td></tr>
+    @if (!string.IsNullOrEmpty(@Model[0].translator)){<tr class="fs-4 fw-bold"><td style="width:200px">譯者:</td><td style="max-width:400px" title="@Model[0].translator">@Model[0].translator</td></tr>}
+    <tr class="fs-3 fw-bold"><td style="width:100px">類型:</td><td style="max-width:400px" title="@Model[0].type">@Model[0].type</td></tr>
+    <tr class="fs-3 fw-bold"><td style="width:100px">出版社:</td><td style="max-width:400px" title="@Model[0].publisher">@Model[0].publisher</td></tr>
+    <tr class="fs-3 fw-bold"><td style="width:100px">出版年份:</td><td style="max-width:400px" title="@Model[0].publishDate">@Model[0].publishDate.ToString("yyyy/MM")</td></tr>
+    @if (@Model[0].bookStatus == "借閱中"){ <tr class="r fs-3 fw-bold "><td style="width:100px">書籍狀態 :</td><td class="text-success fs-1 fw-bold" style="max-width:400px">借出中</td></tr> }
+    else if (@Model[0].bookStatus == "可借閱"){ <tr class=" fs-3 fw-bold " ><td style="width:100px">書籍狀態 :</td><td class="text-warning fs-1 fw-bold"  style="max-width:400px">館內中</td></tr>}
+    else{ <tr class="fs-3 fw-bold "><td style="width:100px"> 書籍狀態 :</td><td class="text-secondary fs-1 fw-bold" style="max-width:400px">無法借閱</td></tr>}
+</table>

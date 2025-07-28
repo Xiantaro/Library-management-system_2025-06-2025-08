@@ -1,0 +1,10 @@
+﻿@model test2.Models.ManagementModels.ZhongXian.Normal.LanguageAndTypeViewModel
+
+
+<select  class="form-select form-select-sm fs-4 fw-bold w-100 bookType">
+        @foreach (var x in Model.Type!)
+        {
+            @if(Model.id == x.TypeId) {<option value="@x.TypeId" selected>@x.Type1</option> }
+            else{<option value="@x.TypeId">@x.Type1</option> }
+        }
+</select>

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<test2.Models.Client>
+
+@{
+    var client = Model.FirstOrDefault();
+}
+
+<div class="container" style="width:90vw">
+    <!-- 租借資訊 -->
+    <!-- 租借項目|抬頭 -->
+    <div class="container-fluid card col-8 shadow-lg rounded-5 p-5" style="width:100%">
+        <table class="table table-striped table-hover align-middle" style="table-layout: fixed;">
+            <thead class="table-light text-center">
+                <tr>
+                    <th></th>
+                    <th>書名</th>
+                    <th>作者</th>
+                    <th>預約日期</th>
+                    <th>取書期限</th>
+                    <th>預約狀態</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                @foreach (var reservation in client!.Reservations.Reverse())
+                {
+                    var collection = reservation!.Collection;
+
+                    <tr>
+                        <td>
+                            @if (collection.CollectionImg != null)
+                            {
+                                <img src="data:image/*; base64, @(Convert.ToBase64String(collection.CollectionImg))" class="img-thumbnail" style="width: 60px; height: 80px; object-fit: cover;" />
+                            }
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => collection!.Title)</td>
+                        <td>@Html.DisplayFor(modelItem => collection!.Author.Author1)</td>
+                        <td>@Html.DisplayFor(modelItem => reservation!.ReservationDate)</td>
+                        <td>@Html.DisplayFor(modelItem => reservation!.DueDateR)</td>
+                        <td><span class="badge bg-secondary" style="font-size: 1rem">@Html.DisplayFor(modelItem => reservation!.ReservationStatus.ReservationStatus1)</span></td>
+                        <td>
+                            @if (reservation!.ReservationStatus.ReservationStatusId == 2)
+                            {
+                                <button class="badge btn btn-danger bi-calendar2-x btn_uReservation" style="font-size: 1rem"> 取消預約</button>
+                            }
+                        </td>
+                        <td class="d-none td_R">@Html.DisplayFor(modelItem => collection!.CollectionId)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

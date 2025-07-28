@@ -1,0 +1,697 @@
+﻿:root {
+    --bs-primary: #5cb85c;
+    /* 綠色主題 */
+    --bs-primary-rgb: 92, 184, 92;
+    --bs-light-green: #e9f0e6;
+    /* 淺綠色，用於背景或邊框 */
+    --bs-dark-green: #3d793d;
+    /* 深綠色，用於強調 */
+    --bs-text-dark: #212529;
+    /* 深色文字 */
+}
+
+/* 自訂 CSS 樣式，確保在 Bootstrap 之後載入 */
+.custom-carousel-wrapper {
+    position: relative; /* 讓它是箭頭定位的參考點 */
+    /* 其他樣式，例如 padding 來為箭頭預留空間 */
+    padding: 0 50px;
+}
+
+    .custom-carousel-wrapper .carousel-control-prev,
+    .custom-carousel-wrapper .carousel-control-next {
+        position: absolute; /* 絕對定位 */
+        top: 50%;
+        transform: translateY(-50%);
+        /* 移除 Bootstrap 預設的 left:0; right:0; */
+    }
+
+    .custom-carousel-wrapper .carousel-control-prev {
+        left: 0;
+        transform: translateY(-50%) translateX(-70%); /* 移到左邊外面 */
+    }
+
+    .custom-carousel-wrapper .carousel-control-next {
+        right: 0;
+        transform: translateY(-50%) translateX(70%); /* 移到右邊外面 */
+    }
+
+.btn-primary {
+    background-color: var(--c-green2-100);
+    border-color: #e9f0e6;
+    /*    --bs-btn-hover-bg: #3d793d;
+    --bs-btn-active-bg: #212529;
+    --bs-btn-active-border-color: #3d793d;*/
+}
+
+    .btn-primary:hover {
+        background-color: #5cb85c;
+        border-color: #e9f0e6;
+        /*    --bs-btn-hover-bg: #3d793d;
+        --bs-btn-active-bg: #212529;
+        --bs-btn-active-border-color: #3d793d;*/
+    }
+
+#main-container {
+    display: flex;
+    flex-direction: column; /* 垂直排列子元素 */
+    min-height: 500vh;
+    margin: 0; /* 移除預設邊距 */
+}
+
+#tree-section {
+    height: 0;
+}
+
+#main-slider,
+#announcements-section,
+#popularBook-section,
+#popularbook-section,
+#FAQ {
+    flex: 1; /* 讓這些區塊能夠彈性地伸展，佔據可用空間 */
+}
+
+#FAQ {
+    position: relative;
+    z-index: 10;
+}
+
+/*carousel*/
+
+.carousel {
+    position: relative;
+}
+
+    .carousel.pointer-event {
+        touch-action: pan-y;
+    }
+
+.carousel-inner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+    .carousel-inner::after {
+        display: block;
+        clear: both;
+        content: "";
+    }
+
+.carousel-item {
+    position: relative;
+    display: none;
+    float: left;
+    width: 100%;
+    margin-right: -100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transition: transform 0.6s ease-in-out;
+    cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-item {
+        transition: none;
+    }
+}
+
+.carousel-item.active,
+.carousel-item-next,
+.carousel-item-prev {
+    display: block;
+}
+
+    .carousel-item-next:not(.carousel-item-start),
+    .active.carousel-item-end {
+        transform: translateX(100%);
+    }
+
+    .carousel-item-prev:not(.carousel-item-end),
+    .active.carousel-item-start {
+        transform: translateX(-100%);
+    }
+
+.carousel-fade .carousel-item {
+    opacity: 0;
+    transition-property: opacity;
+    transform: none;
+}
+
+    .carousel-fade .carousel-item.active,
+    .carousel-fade .carousel-item-next.carousel-item-start,
+    .carousel-fade .carousel-item-prev.carousel-item-end {
+        z-index: 1;
+        opacity: 1;
+    }
+
+.carousel-fade .active.carousel-item-start,
+.carousel-fade .active.carousel-item-end {
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0s 0.6s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-fade .active.carousel-item-start,
+    .carousel-fade .active.carousel-item-end {
+        transition: none;
+    }
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    padding: 0;
+    color: #fff;
+    text-align: center;
+    background: none;
+    border: 0;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-control-prev,
+    .carousel-control-next {
+        transition: none;
+    }
+}
+
+.carousel-control-prev:hover, .carousel-control-prev:focus,
+.carousel-control-next:hover,
+.carousel-control-next:focus {
+    color: #fff;
+    text-decoration: none;
+    outline: 0;
+    opacity: 0.9;
+}
+
+.carousel-control-prev {
+    left: 0;
+}
+
+.carousel-control-next {
+    right: 0;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 100% 100%;
+}
+
+.carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e") /*rtl:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e")*/;
+}
+
+.carousel-control-next-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") /*rtl:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e")*/;
+}
+
+.carousel-indicators {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin-right: 15%;
+    margin-bottom: 1rem;
+    margin-left: 15%;
+}
+
+    .carousel-indicators [data-bs-target] {
+        box-sizing: content-box !important;
+        flex: 0 1 auto;
+        width: 30px;
+        height: 3px;
+        padding: 0;
+        margin-right: 3px;
+        margin-left: 3px;
+        text-indent: -999px;
+        cursor: pointer;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 0;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        opacity: 0.5;
+        transition: opacity 0.6s ease;
+    }
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-indicators [data-bs-target] {
+        transition: none;
+    }
+}
+
+.carousel-indicators .active {
+    opacity: 1;
+}
+
+.carousel-caption {
+    position: absolute;
+    right: 15%;
+    bottom: 1.25rem;
+    left: 15%;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    color: #fff;
+    text-align: center;
+}
+
+.carousel-dark .carousel-control-prev-icon,
+.carousel-dark .carousel-control-next-icon {
+    filter: invert(1) grayscale(100);
+}
+
+.carousel-dark .carousel-indicators [data-bs-target] {
+    background-color: #000;
+}
+
+.carousel-dark .carousel-caption {
+    color: #000;
+}
+
+[data-bs-theme=dark] .carousel .carousel-control-prev-icon,
+[data-bs-theme=dark] .carousel .carousel-control-next-icon, [data-bs-theme=dark].carousel .carousel-control-prev-icon,
+[data-bs-theme=dark].carousel .carousel-control-next-icon {
+    filter: invert(1) grayscale(100);
+}
+
+[data-bs-theme=dark] .carousel .carousel-indicators [data-bs-target], [data-bs-theme=dark].carousel .carousel-indicators [data-bs-target] {
+    background-color: #000;
+}
+
+[data-bs-theme=dark] .carousel .carousel-caption, [data-bs-theme=dark].carousel .carousel-caption {
+    color: #000;
+}
+
+/*輪播圖*/
+
+/* 設定 3D 視角 */
+#main-slider {
+    /* 視角深度，數字越大，3D 效果越淺 */
+    perspective: 1000px; /* 增加視角深度，讓 3D 效果更明顯 */
+    /* 讓內容居中 */
+    display: flex;
+    /* 讓內容居中 */
+    justify-content: center;
+    /* 讓內容居中 */
+    align-items: center;
+    /* 為了箭頭的定位 */
+    position: relative;
+    max-height: 75vh;
+}
+
+/* 輪播容器，負責旋轉 */
+.carousel-spinner {
+    width: 70vw;
+    /* 設定輪播的寬度 */
+    height: 35vw;
+    /* 設定輪播的高度 */
+    position: relative;
+    transform-style: preserve-3d;
+    /* 讓子元素在 3D 空間中定位 */
+    /* 移除自動旋轉動畫 */
+    transform-origin: center center;
+    /* 旋轉中心設定在中間 */
+    transition: transform 0.8s ease-out; /* 加入過渡效果，讓旋轉更平滑 */
+    transform: translateZ(-500px);
+}
+
+/* 輪播項目 */
+.my-carousel-item {
+    position: absolute;
+    width: 100%;
+    /* 讓圖片填滿 */
+    height: auto;
+    /* 讓圖片填滿 */
+    opacity: 0.9;
+    /* 稍微透明一點，增加層次感 */
+    /* backface-visibility: hidden; */
+    /* 如果不希望背面顯示，可以加上 */
+    left: 0; /* 確保位置正確 */
+    top: 0; /* 確保位置正確 */
+    transform-origin: center center; /* 確保旋轉中心正確 */
+}
+
+    /* 每個輪播項目的初始位置和旋轉角度 */
+    /* 計算方式：rotateY(360deg / 項目數量 * 當前項目索引) translateZ(圓半徑) */
+    /* 這裡的 translateZ(500px) 是半徑，可以根據實際效果調整 */
+    .my-carousel-item:nth-child(1) {
+        top: 50%;
+        transform: rotateY(0deg) translateY(-50%) translateZ(500px);
+    }
+
+    .my-carousel-item:nth-child(2) {
+        top: 50%;
+        transform: rotateY(120deg) translateY(-50%) translateZ(500px);
+    }
+
+    .my-carousel-item:nth-child(3) {
+        top: 50%;
+        transform: rotateY(240deg) translateY(-50%) translateZ(500px);
+    }
+
+    /* 圖片樣式 */
+    .my-carousel-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* 讓圖片填滿容器 */
+        border-radius: 8px;
+        /* 讓圖片邊角圓滑一點 */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 增加陰影，讓 3D 感更強 */
+    }
+
+/* 旋轉控制箭頭樣式 */
+.carousel-control-btn {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 50%;
+    color: white;
+    border: none;
+    padding: 30px 20px;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 3rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+    .carousel-control-btn:hover {
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+
+.my-carousel-control-prev {
+    left: 10px;
+    transform: translateX(-20vw) translateY(-50%) translateZ(-500px);
+}
+
+.my-carousel-control-next {
+    right: 10px;
+    transform: translateX(20vw) translateY(-50%) translateZ(-500px);
+}
+
+/* ------------------------------------------------------------------------------------ */
+/* ------------------------------卡片翻轉效果的 CSS 樣式 -------------------------------*/
+/* -- 目標是讓翻轉效果與 Bootstrap 的卡片樣式和排版協同運作，並確保高度和視覺效果穩定 --*/
+/* ------------------------------------------------------------------------------------ */
+
+/* 確保 col 內部的元素能撐滿高度，以便 flip-card-container 能佔據完整空間 */
+.row.g-4 > .col {
+    display: flex;
+}
+
+/* 設定翻轉卡片的容器 */
+.flip-card-container {
+    width: 100%;
+    /* 固定卡片高度，讓正反面尺寸一致，這是翻轉的關鍵 */
+    height: 420px; /* 可以根據實際內容調整這個高度 */
+    perspective: 1000px; /* 3D 視角 */
+    position: relative; /* 為了讓內部絕對定位的元素參考 */
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075); /* Bootstrap shadow-sm 樣式 */
+    border-radius: var(--bs-card-border-radius, 0.375rem); /* Bootstrap card-border-radius 樣式 */
+    overflow: hidden; /* 防止內容溢出圓角 */
+}
+
+/* 翻轉的內部元素，真正執行 3D 轉換 */
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s; /* 翻轉動畫時間 */
+    transform-style: preserve-3d; /* 讓子元素在 3D 空間中呈現 */
+}
+
+/* 滑鼠懸停時，翻轉內部元素 */
+.flip-card-container:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* 卡片的正面和背面共用樣式 */
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* 隱藏元素背面，關鍵屬性 */
+    background-color: white; /* 確保背景色，以覆蓋 */
+    display: flex; /* 使用 Flexbox 進行內部佈局 */
+    flex-direction: column; /* 垂直排列內容 */
+    justify-content: flex-start; /* 從起始位置對齊 */
+    align-items: flex-start; /* 水平居中 */
+    padding: 1rem; /* 內部填充 */
+    box-sizing: border-box; /* 確保 padding 不會增加總寬高 */
+}
+
+/* 設置正面卡片 */
+.flip-card-front {
+    z-index: 2; /* 確保正面在背面之上 */
+}
+
+/* 設置背面卡片，初始翻轉 180 度 */
+.flip-card-back {
+    transform: rotateY(180deg);
+    justify-content: center; /* 背面內容垂直置中 */
+}
+
+/* 調整圖片樣式，讓它在卡片內適當顯示 */
+.flip-card-front .card-img-top {
+    max-width: 100%;
+    height: auto; /* 保持圖片比例 */
+    max-height: 65%; /* 限制圖片高度，避免過高擠壓文字 */
+    object-fit: contain; /* 確保圖片完整顯示，不裁切 */
+    padding: 0.5rem; /* 圖片周圍的留白 */
+    margin-bottom: 0.5rem; /* 圖片下方留白 */
+}
+
+/* 調整正面卡片的文字部分 */
+.flip-card-front .card-title {
+    font-size: 1.25rem; /* Bootstrap 預設 h5 大小 */
+    margin-top: auto; /* 讓標題和作者在底部對齊 */
+    margin-bottom: 0.25rem;
+}
+
+.flip-card-front .card-text {
+    font-size: 0.9rem; /* Bootstrap 預設 text-muted 大小 */
+    color: var(--bs-secondary-color); /* Bootstrap 預設 text-muted 顏色 */
+    margin-bottom: 0; /* 移除段落底部多餘邊距 */
+}
+
+/* 調整背面卡片內容的文字樣式 */
+.flip-card-back .card-title {
+    margin-top: unset;
+    margin-bottom: 0.75rem;
+}
+
+.flip-card-back p {
+    margin-bottom: 0.5rem;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+.flip-card-back .btn {
+    margin-top: 1rem;
+}
+
+/* 分頁區域樣式 */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* 確保垂直置中 */
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.pagination-buttons .btn {
+    background-color: #f0f0f0;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    padding: 8px 15px;
+    margin: 0 2px;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+}
+
+    .pagination-buttons .btn.active {
+        background-color: #dc3545;
+        /* 圖片中的橘紅色 */
+        color: white;
+        border-color: #dc3545;
+    }
+
+    .pagination-buttons .btn:hover:not(.active) {
+        background-color: #e2e6ea;
+        border-color: #dae0e5;
+    }
+
+.pagination-select-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+}
+
+    .pagination-select-page label {
+        margin-right: 10px;
+        color: #555;
+        font-size: 0.95em;
+        /* 確保標籤本身不會影響對齊 */
+        display: inline-block;
+        /* 或 flex item */
+    }
+
+    .pagination-select-page .form-select {
+        width: auto;
+        padding: 6px 12px;
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        color: #495057;
+        font-size: 0.95em;
+        cursor: pointer;
+        /* 關鍵調整：確保文字和箭頭對齊 */
+        vertical-align: middle;
+        /* 垂直對齊 */
+        line-height: 1.2;
+        /* 調整行高，讓內容更緊湊 */
+        appearance: none;
+        /* 移除預設的系統樣式 */
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        /* 自訂箭頭 */
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 16px 12px;
+        padding-right: 2.5rem;
+        /* 為箭頭預留空間 */
+    }
+
+
+.pagination-info {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    color: #555;
+    font-size: 0.95em;
+}
+
+    .pagination-info .page-control-btn {
+        background-color: #e0e0e0;
+        color: #6c757d;
+        border: 1px solid #dee2e6;
+        padding: 8px 12px;
+        border-radius: 5px;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+        .pagination-info .page-control-btn:hover {
+            background-color: #d3d3d3;
+        }
+
+        .pagination-info .page-control-btn.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: #f0f0f0;
+        }
+
+.faq-item {
+    background-color: #ffffff; /* 設定為白色背景 */
+}
+
+/* ---------------------------------------------------------- */
+/* --- 通用設定：適用於所有卡片內的圖片與文字區塊基礎樣式 --- */
+/* ---------------------------------------------------------- */
+
+/* 圖片父容器的基礎樣式 */
+.book-image-ratio-container {
+    position: relative;
+    overflow: hidden;
+    background-color: #f0f0f0; /* 可選：圖片載入前的背景色 */
+    display: flex; /* 讓圖片在容器內置中 */
+    justify-content: center;
+    align-items: center;
+    /* 如果有通用的 aspect-ratio 需求，放在這裡 */
+    /* aspect-ratio: 2 / 3; */
+}
+
+/* 圖片本身的基礎樣式 */
+.book-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 讓圖片填滿整個容器，裁切多餘部分 */
+    display: block;
+}
+
+/* card-body 的基礎樣式 */
+.card-body {
+    flex-grow: 1; /* 自動佔據剩下的空間，這是一個很好的通用設定 */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+/* 卡片標題的基礎樣式 */
+.card-title {
+    overflow: hidden;
+    text-overflow: ellipsis; /* 超出部分顯示省略號 */
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* 限制顯示一行 */
+    text-overflow: ellipsis; /* 超出部分顯示省略號 */
+    -webkit-box-orient: vertical;
+    white-space: normal; /* 允許換行 */
+    margin-top: auto; /* 讓標題盡量靠下 */
+    margin-bottom: 0.25rem;
+}
+
+/* 卡片文字的基礎樣式 */
+.card-text {
+    height: 1.5em; /* 確保 1 行文字高度 */
+    overflow: hidden;
+    white-space: nowrap; /* 不換行 */
+    text-overflow: ellipsis; /* 超出部分顯示省略號 */
+    margin-bottom: 0;
+}
+
+/* ----------------------------------------------- */
+/* 針對新書推薦輪播圖的特定設定 (覆蓋或細化通用設定) */
+/* ----------------------------------------------- */
+
+#newBooksCarousel .card {
+    height: 600px; /* <--- 核心：設定固定高度 */
+    /* 這裡不再需要 h-100 class，因為已經有了固定高度 */
+    /* 如果 .card 已經有 display: flex; flex-direction: column; 等設定，
+       且沒有其他卡片類別會衝突，這裡可以不重複設定 */
+}
+
+#newBooksCarousel .book-image-ratio-container {
+    flex: 0 0 85%; /* 圖片容器佔卡片總高 70% */
+}
+
+/* 新書推薦的 card-body 會自動佔據剩下空間，所以這裡只要寫 flex: 1 即可 */
+#newBooksCarousel .card-body {
+    flex: 1;
+}
+
+.pagination-buttons > .btn.active {
+    background-color: var(--c-green2-100);
+    border-color: var(--c-green2-100);
+}

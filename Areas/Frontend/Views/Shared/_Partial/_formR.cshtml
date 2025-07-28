@@ -1,0 +1,20 @@
+﻿@{
+    var userId = ViewData["Id"];
+    var userBorrowStatus = ViewData["BorrowStatus"];
+    var userBorrowCount = ViewData["BorrowCount"];
+}
+
+<input id="box_borrowStatus" type="text" value="@userBorrowStatus" class="d-none" />
+<input id="box_borrowCount" type="text" value="@userBorrowCount" class="d-none" />
+<form asp-area="Frontend" asp-controller="Home" asp-action="CreateReserve" method="post" class="d-none">
+    <input id="id_user1" type="text" name="user" value="@userId" />
+    <input id="id_collection1" type="text" name="collection" />
+    <input id="box_statusR" type="text" name="status" />
+    <button type="submit" id="btn_cReserveS"></button>
+</form>
+<form asp-area="Frontend" asp-controller="Home" asp-action="UpdateReserve" method="post" class="d-none">
+    <input id="id_user2" type="text" name="user" value="@userId" />
+    <input id="id_collection2" type="text" name="collection" />
+    <button type="submit" id="btn_uReserveS"></button>
+</form>
+<a asp-area="Frontend" asp-controller="Access" asp-action="LoginC" class="d-none btn_guideLC"></a>

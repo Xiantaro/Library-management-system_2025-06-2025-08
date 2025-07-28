@@ -1,0 +1,11 @@
+﻿@{
+    var x = (ViewContext.RouteData.Values["controller"])!.ToString();
+    var y = (ViewContext.RouteData.Values["action"])!.ToString();
+
+    if (x == "Home" && y == "Index") { Layout = "~/Areas/Frontend/Views/Shared/_Layout/_Index.cshtml"; }
+    else if (x == "Home" && y == "Activity") { Layout = "~/Areas/Frontend/Views/Shared/_Layout/_Activity.cshtml"; }
+    else if (x == "Home" && y == "ActivityInfo") { Layout = "~/Areas/Frontend/Views/Shared/_Layout/_Activity.cshtml"; }
+    else if (x == "Home" && y == "Register") { Layout = "~/Areas/Frontend/Views/Shared/_Layout/_Activity.cshtml"; }
+    else if (x == "Home" && y == "Query") { Layout = "~/Areas/Frontend/Views/Shared/_Layout/_Query.cshtml"; }
+    else if (x == "Home" && y == "Collection") { Layout = "~/Areas/Frontend/Views/Shared/_Layout/_Collection.cshtml"; }
+}

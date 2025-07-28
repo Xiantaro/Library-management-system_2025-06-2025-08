@@ -1,0 +1,263 @@
+﻿/* 全域設定 */
+body {
+    font-family: '微軟正黑體', 'Microsoft JhengHei', sans-serif;
+    /* 確保中文字體顯示 */
+}
+
+.register-btn-bs {
+    background-color: #4CAF50 !important;
+}
+
+/* 覆寫 bootstrap btn */
+
+.btn-primary {
+    background-color: var(--c-green2-100);
+    border-color: var(--c-green2-100);
+}
+
+    .btn-primary:hover {
+        background-color: #5cb85c;
+        border-color: #e9f0e6;
+        /*    --bs-btn-hover-bg: #3d793d;
+        --bs-btn-active-bg: #212529;
+        --bs-btn-active-border-color: #3d793d;*/
+    }
+
+/* 搜尋區塊自訂樣式 */
+.search-section {
+    /* background-color: rgba(124, 172, 124, 0.5); */
+    /* 根據圖片調整背景色 */
+
+    background-image: url(https://picsum.photos/id/11/1400/300);
+    background-size: cover;
+    background-position: center;
+    height: 100px;
+    /* 確保高度足夠，根據圖片調整 */
+    position: relative;
+    /* 為了背景圖可以覆蓋整個區域 */
+    z-index: 1;
+    /* 確保內容在背景圖之上 */
+}
+
+    /* 確保背景圖完全覆蓋，如果圖片邊緣有圓角等，需在此處處理 */
+    .search-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        /* 這邊可以放置一個半透明的遮罩或漸層，讓文字更清晰 */
+        /* background: linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(255,255,255,0.5)); */
+        z-index: -1;
+        /* 讓它在內容之下 */
+    }
+
+.search-container-bs {
+    background-color: white;
+    border-radius: 50px;
+    /* 讓整體呈現圓角 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    /* 確保圓角生效 */
+}
+
+    .search-container-bs .form-control {
+        border-right: none !important;
+        /* 移除 input 右邊框 */
+    }
+
+    .search-container-bs .btn-search {
+        background-color: transparent;
+        border: none;
+        color: #ff8c00;
+        /* 放大鏡顏色 */
+        font-size: 1.5rem;
+        /* 放大鏡大小 */
+        padding: 0.5rem 1rem;
+    }
+
+    .search-container-bs .rounded-pill-start {
+        border-top-left-radius: 50px !important;
+        border-bottom-left-radius: 50px !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+
+    .search-container-bs .rounded-pill-end {
+        border-top-right-radius: 50px !important;
+        border-bottom-right-radius: 50px !important;
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+    }
+
+/* 如果你的 site.css 或 indexF.css 有設定全域的 a 標籤顏色，可能需要針對 nav-link 做覆蓋 */
+/* .nav-link.text-dark.link {
+    color: #343a40 !important; 
+} */
+
+/* 確保所有自訂的 border-radius 不被 Bootstrap 預設覆蓋 */
+.form-control,
+.btn {
+    border-radius: var(--bs-border-radius) !important;
+    /* 這是 Bootstrap 預設圓角變數 */
+}
+
+/* 覆寫特例 */
+.search-container-bs .form-control {
+    border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius) !important;
+}
+
+.search-container-bs .btn-search {
+    border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0 !important;
+}
+
+.search-container-bs .form-control:focus {
+    outline: none; /* 移除瀏覽器預設的焦點框 */
+    box-shadow: none; /* 如果有其他陰影也一起移除 */
+}
+
+/* 活動區塊自訂樣式 */
+.section-title-bs {
+    font-size: 2.5em;
+    color: #333;
+    font-weight: bold;
+}
+
+.btn-category-bs {
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #555;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    .btn-category-bs.active,
+    .btn-category-bs:hover {
+        background-color: #ff8c00;
+        /* 活躍或懸停時的顏色 */
+        color: white;
+    }
+
+/* 新增的切換按鈕樣式 */
+.btn-display-toggle {
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    /* 稍微小一點 */
+    font-size: 0.9em;
+    /* 稍微小一點 */
+    color: #555;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    .btn-display-toggle.active,
+    .btn-display-toggle:hover {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+/* 分頁區域樣式 */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* 確保垂直置中 */
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.pagination-buttons .btn {
+    background-color: #f0f0f0;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    padding: 8px 15px;
+    margin: 0 2px;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+}
+
+    .pagination-buttons .btn.active {
+        background-color: var(--c-green2-100);
+        color: white;
+        border-color: var(--c-green2-100);
+    }
+
+    .pagination-buttons .btn:hover:not(.active) {
+        background-color: #e2e6ea;
+        border-color: #dae0e5;
+    }
+
+.pagination-select-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+}
+
+    .pagination-select-page label {
+        margin-right: 10px;
+        color: #555;
+        font-size: 0.95em;
+        /* 確保標籤本身不會影響對齊 */
+        display: inline-block;
+        /* 或 flex item */
+    }
+
+    .pagination-select-page .form-select {
+        width: auto;
+        padding: 6px 12px;
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        color: #495057;
+        font-size: 0.95em;
+        cursor: pointer;
+        /* 關鍵調整：確保文字和箭頭對齊 */
+        vertical-align: middle;
+        /* 垂直對齊 */
+        line-height: 1.2;
+        /* 調整行高，讓內容更緊湊 */
+        appearance: none;
+        /* 移除預設的系統樣式 */
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        /* 自訂箭頭 */
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 16px 12px;
+        padding-right: 2.5rem;
+        /* 為箭頭預留空間 */
+    }
+
+
+.pagination-info {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    color: #555;
+    font-size: 0.95em;
+}
+
+    .pagination-info .page-control-btn {
+        background-color: #e0e0e0;
+        color: #6c757d;
+        border: 1px solid #dee2e6;
+        padding: 8px 12px;
+        border-radius: 5px;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+        .pagination-info .page-control-btn:hover {
+            background-color: #d3d3d3;
+        }
+
+        .pagination-info .page-control-btn.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: #f0f0f0;
+        }

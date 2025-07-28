@@ -1,0 +1,48 @@
+﻿.page-container {
+    display: flex;
+    min-height: 100vh;
+    height: auto;
+}
+
+.sidebar {
+    height: 70vh;
+    width: 15vw;
+    background-color: #343a40;
+    color: #fff;
+}
+
+.nav-pills .nav-link {
+    color: #fff;
+}
+
+    .nav-pills .nav-link:hover {
+        background-color: lightgreen;
+        color: black;
+        opacity: 0.4;
+    }
+
+    .nav-pills .nav-link.active {
+        background-color: lightseagreen !important;
+        opacity: 1;
+    }
+
+/* 取消瀏覽器預設點button後的藍字效果 */
+button.nav-link:focus {
+    color: inherit;
+    /* 使用繼承色，避免變藍 */
+    box-shadow: none;
+    /* 取消藍色 outline 陰影 */
+    outline: none;
+    /* 取消藍色外框線 */
+}
+
+.card {
+    box-shadow: 0 120px 600px rgba(9, 174, 39, 0.2) !important;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+.accordion-button:focus {
+    background-color: var(--bs-accordion-btn-bg);
+    border-color: var(--bs-border-color);
+    box-shadow: none;
+}

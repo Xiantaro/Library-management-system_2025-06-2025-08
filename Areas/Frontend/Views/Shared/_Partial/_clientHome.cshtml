@@ -1,0 +1,163 @@
+﻿@model IEnumerable<test2.Models.Client>
+
+@{
+    var client = Model.FirstOrDefault();
+    var userAccount = ViewData["Account"];
+    var userId = ViewData["Id"];
+    var userName = ViewData["Name"];
+}
+
+<div class="container text-center" style="width:90vw">
+    <div class="p-4 rounded-3">
+
+        <h1 class="text-black">
+            歡迎 @userName 回到林間書語
+        </h1>
+
+        <h4 class="text-black mt-3">讓閱讀，像森林一樣深邃而自由。</h4>
+    </div>
+    <div class="row justify-content-center">
+        <div class="card col-8 shadow-lg rounded-5 p-5" style="width:65%">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="col-4 text-start" style="font-size: 1rem">
+                    密碼 <i class="bi bi-key i_loginC"></i>
+                </div>
+                <div class="col-6 text-start" style="font-size: 1rem">
+                    <div id="passwordDisplay">
+                        @for (var i = 0; i < 10; i++)
+                        {
+                            <i class="bi bi-circle-fill"></i>
+                        }
+                    </div>
+                    <input id="passwordInput1" type="text" class="form-control d-inline w-auto d-none" placeholder="輸入新密碼">
+                    <input id="passwordInput2" type="text" class="form-control d-inline w-auto d-none" placeholder="再次輸入新密碼">
+                </div>
+                <div class="col-2 text-end ">
+                    <button class="btn btn-sm" id="editPasswordBtn" style="font-size: 1rem">修改</button>
+                    <button class="btn btn-sm d-none" id="confirmPasswordBtn" style="font-size: 1rem">確認</button>
+                    <button class="btn btn-sm d-none" id="savePasswordBtn" style="font-size: 1rem">儲存</button>
+                    <button class="btn btn-secondary btn-sm d-none" id="cancelPasswordBtn" style="font-size: 1rem">取消</button>
+                </div>
+            </div>
+            <form asp-area="Frontend" asp-controller="Home" asp-action="UpdatePassword" method="post" class="d-none">
+                <input id="idInput1" type="text" name="idInput1" value="@userId" />
+                <input id="passwordInput3" type="text" name="passwordInput3" />
+                <button type="submit" id="btn_password"></button>
+            </form>
+
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <div class="col-4 text-start" style="font-size: 1rem">
+                    手機 <i class="bi bi-telephone"></i>
+                </div>
+                <div class="col-6 text-start" style="font-size: 1rem">
+                    <span id="phoneDisplay">@Html.DisplayFor(modelItem => client!.CPhone)</span>
+                    <input id="phoneInput1" type="text" class="form-control d-inline w-auto d-none" value="@Html.DisplayFor(modelItem => client!.CPhone)">
+                </div>
+                <div class="col-2 text-end">
+                    <button class="btn btn-sm" id="editPhoneBtn" style="font-size: 1rem">修改</button>
+                    <button class="btn btn-sm d-none" id="savePhoneBtn" style="font-size: 1rem">儲存</button>
+                    <button class="btn btn-secondary btn-sm d-none" id="cancelPhoneBtn" style="font-size: 1rem">取消</button>
+                </div>
+            </div>
+            <form asp-area="Frontend" asp-controller="Home" asp-action="UpdatePhone" method="post" class="d-none">
+                <input id="idInput2" type="text" name="idInput2" value="@userId" />
+                <input id="phoneInput2" type="text" name="phoneInput2" />
+                <button type="submit" id="btn_phone"></button>
+            </form>
+
+            <div class="w-100 px-md-5 px-3 my-3">
+                <div class="row g-2 justify-content-center">
+                    <div class="col-auto">
+                        <form asp-area="Frontend" asp-controller="Account" asp-action="LinkExternalLogin" method="post">
+                            <input type="hidden" name="provider" value="Facebook" />
+                            <input type="hidden" name="userAccount" value="@userAccount" />
+                            <button type="submit" class="btn" style="background-color:cornflowerblue; color:white" id="btn_facebook">
+                                <i class="bi bi-facebook"></i> Facebook 連結
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-auto">
+                        <form asp-area="Frontend" asp-controller="Account" asp-action="LinkExternalLogin" method="post">
+                            <input type="hidden" name="provider" value="Google" />
+                            <input type="hidden" name="userAccount" value="@userAccount" />
+                            <button type="submit" class="btn btn-light border" id="btn_google">
+                                <img src="https://img.icons8.com/color/16/000000/google-logo.png" /> Google 連結
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 個人狀態簡報 -->
+            <div class="row mt-3">
+                <div class="col-3">
+                    <div class="card card-hover shadow-lg rounded-4 p-1" onclick="switchToTab('tab1')" style="cursor: pointer;">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">我的最愛</h5>
+                            <p class="card-text">
+                                @{
+                                    var favoriteCount = 0;
+
+                                    foreach (var favorite in client!.Favorites) { favoriteCount++; }
+                                }
+
+                                已收藏書籍：@favoriteCount
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-hover shadow-lg rounded-4 p-1" onclick="switchToTab('tab2')" style="cursor: pointer;">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">預約紀錄</h5>
+                            <p class="card-text">
+                                @{
+                                    var reservationCount = 0;
+
+                                    foreach (var reservation in client!.Reservations) { reservationCount++; }
+                                }
+
+                                已預約書籍：@reservationCount
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-hover shadow-lg rounded-4 p-1" onclick="switchToTab('tab3')" style="cursor: pointer;">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">歷史紀錄</h5>
+                            <p class="card-text">
+                                @{
+                                    var historyCount = 0;
+
+                                    foreach (var borrow in client!.Borrows)
+                                    {
+                                        foreach (var history in borrow!.Histories) { historyCount++; }
+                                    }
+                                }
+
+                                已借閱書籍：@historyCount
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-hover shadow-lg rounded-4 p-1" onclick="switchToTab('tab4')" style="cursor: pointer;">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">訊息中心</h5>
+                            <p class="card-text">
+                                @{
+                                    var messageCount = 0;
+
+                                    foreach (var message in client!.Notifications) { messageCount++; }
+                                }
+
+                                已收到通知：@messageCount
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,117 @@
+﻿@model IEnumerable<test2.Models.Collection>
+
+@{
+    var bookLimit = 5;
+    var bookCount = Model.Count();
+    var bookPage = (int)Math.Ceiling((double)bookCount / bookLimit);
+}
+
+<div id="carousel_book" class="carousel slide">
+    <div class="carousel-inner">
+        @for (var pageIndex = 0; pageIndex < bookPage; pageIndex++)
+        {
+            var activeClass = (pageIndex == 0) ? "active" : "";
+
+            <div class="carousel-item page @activeClass">
+                @{
+                    var bookShow = Model.Skip(pageIndex * bookLimit).Take(bookLimit);
+                    var bookIndex = 1;
+                }
+
+                @foreach (var book in bookShow)
+                {
+                    var sepClass = ((bookIndex % 5 == 0) || (bookIndex == bookShow.Count())) ? "" : "sep";
+
+                    <div class="row box_book @sepClass">
+                        <div class="col-3 col-lg-4 d-flex w-33" style="justify-content: center; align-items: center">
+                            @{
+                                if (book.CollectionImg != null)
+                                {
+                                    <img src="data:image/*; base64, @(Convert.ToBase64String(book.CollectionImg))" alt="" style="width: 200px; height: auto; max-height: 280px; object-fit: fill" />
+                                }
+                            }
+                        </div>
+                        <div class="col-6 col-lg-6 d-flex w-50" style="justify-content: left; align-items: center; text-align: left">
+                            <table>
+                                <tr><td colspan="2"><h4><strong>@Html.DisplayFor(modelItem => book.Title)</strong></h4></td></tr>
+                                <tr>
+                                    <th>作者</th>
+                                    <td>@Html.DisplayFor(modelItem => book.Author.Author1)</td>
+                                </tr>
+                                <tr>
+                                    <th>譯者</th>
+                                    <td>@Html.DisplayFor(modelItem => book.Translator)</td>
+                                </tr>
+                                <tr>
+                                    <th>出版社</th>
+                                    <td>@Html.DisplayFor(modelItem => book.Publisher)</td>
+                                </tr>
+                                <tr>
+                                    <th>語言</th>
+                                    <td>@Html.DisplayFor(modelItem => book.Language.Language1)</td>
+                                </tr>
+                                <tr>
+                                    <th>ISBN</th>
+                                    <td>@Html.DisplayFor(modelItem => book.Isbn)</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-3 col-lg-2 d-flex flex-column" style="align-items: start; justify-content:end">
+                            <input type="text" value="@Html.DisplayFor(modelItem => book.CollectionId)" class="d-none box_collection" />
+
+                            @{
+                                var totalCount = 0;
+                                var borrowCount = 0;
+
+                                foreach (var collection in book!.Books)
+                                {
+                                    if (collection.BookStatusId == 2) { borrowCount++; }
+
+                                    totalCount++;
+                                }
+
+                                if (borrowCount == totalCount)
+                                {
+                                    <button type="button" class="btn mt-0 btn_book1 w-75 mb-3">預約</button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn mt-0 btn_book1 w-75 mb-3">借閱</button>
+                                }
+                            }
+
+                            <button type="button" class="btn mt-0 btn_book2 w-75 mb-3">更多</button>
+                        </div>
+                    </div>
+
+                    bookIndex++;
+                }
+            </div>
+        }
+    </div>
+
+    <div style="margin-top: 3vh; height: 1.25rem" id="box_man">
+        @for (var pageIndex = 0; pageIndex < bookPage; pageIndex++)
+        {
+            var pageIndexR = pageIndex + 1;
+            var iColor = (pageIndexR == 1) ? "black" : "";
+
+            <i class="bi bi-person-walking" id="man_@pageIndexR" style="color: @iColor"></i>
+        }
+    </div>
+
+    <nav aria-label="Page navigation" id="box_pag">
+        <ul class="pagination">
+            <li class="page-item" id="btn_prev"><a class="page-link" href="#">上頁</a></li>
+
+            @for (var pageIndex = 0; pageIndex < bookPage; pageIndex++)
+            {
+                var pageIndexR = pageIndex + 1;
+
+                <li class="page-item pageClass" data-bs-target="#carousel_book" data-bs-slide-to="@pageIndex" id="btn_@pageIndexR"><a class="page-link" href="#">@pageIndexR</a></li>
+            }
+
+            <li class="page-item" id="btn_next"><a class="page-link" href="#">下頁</a></li>
+        </ul>
+    </nav>
+</div>

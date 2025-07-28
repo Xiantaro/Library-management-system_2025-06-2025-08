@@ -1,0 +1,17 @@
+﻿@{
+    var userName = ViewData["UserName"];
+}
+
+<main id="mainContent" class="col-12 mt-5 justify-content-center text-center">
+    <!-- 這裡將載入 partial -->
+    <h1 class="text-muted fw-bold">📌 歡迎使用圖書館管理系統</h1>
+    @{
+        if (userName != null)
+        {
+            <h3 class="fs-3 fw-bold">歡迎 @userName 歸來，今天又是美好的一天</h3>
+        }
+    }
+    <p class="fs-3 fw-bold">請從左方選單選取一項功能</p>
+</main>
+
+

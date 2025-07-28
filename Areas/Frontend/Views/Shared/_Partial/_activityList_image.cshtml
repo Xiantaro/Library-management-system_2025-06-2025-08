@@ -1,0 +1,91 @@
+﻿@model test2.Areas.Frontend.Models.ViewModels.ActivityPagedViewModel
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 activity-cards-container-bs"
+	 id="activityCardsContainer">
+	@foreach (var activity in Model.Activities)
+	{
+		<div class="col activity-card-col">
+			<div class="card h-100 activity-card-bs">
+				<a href="@Url.Action("ActivityInfo", "Home", new { activityTitle = activity.ActivityTitle })">
+					<img src="data:img/jpeg;base64,@activity.ActivityImgBase64" class="card-img-top card-image-bs"
+						 alt="@activity.ActivityTitle">
+				</a>
+				<div class="card-body d-flex flex-column">
+					<h5 class="card-title fw-bold">@activity.ActivityTitle</h5>
+					<div class="flex-grow-1"></div>
+					<p class="card-text text-muted mb-1"><small>活動起訖：</small></p>
+					<p class="card-text text-muted mb-1">
+						<small>
+							@activity.StartDate.ToString("yyyy/MM/dd/HH:mm") ~
+							<br>
+							@activity.EndDate.ToString("yyyy/MM/dd/HH:mm")
+						</small>
+					</p>
+					<p class="card-text text-muted mb-2">
+						@* <small>地點：國立公共資訊圖書館</small><br /> *@
+						@* @if (DateTime.Now < activity.EndDate)
+						{
+							<small>剩餘名額：<span>未開始</span></small>
+						}
+						else if (DateTime.Now > activity.EndDate)
+						{
+							<small>剩餘名額：<span>已結束</span></small>
+						}
+						else{
+						{
+							<small>剩餘名額：<span id="card-capacity-@activity.ActivityId">@activity.Capacity</span></small> <!--- 新增一個span來顯示名額並給予id方便更新，這裡我加了'card-'前綴以免跟表格模式重複ID -->
+						} *@
+					</p>
+					<div class="activity-tags-bs mb-3">
+						<span class="badge bg-light text-dark me-1 mb-1">@(activity.Audience?.Audience1 ?? "無受眾種類資料")</span>
+						<span class="badge bg-light text-dark me-1 mb-1">@(activity.ActivityType?.ActivityType1 ?? "無活動類別資料")</span>
+					</div>
+
+					@* ====== 報名按鈕邏輯優化 ====== *@
+					@{
+						string buttonClass = "btn btn-primary mt-auto register-activity-btn"; // 統一個class給JS監聽
+						string buttonText = "點我報名";
+						string disabledAttribute = ""; // 預設不禁用
+
+						if (DateTime.Now < activity.StartDate)
+						{
+							buttonText = "報名時間未到";
+							disabledAttribute = "disabled";
+						}
+						else if (DateTime.Now > activity.EndDate)
+						{
+							buttonText = "報名時間已過";
+							disabledAttribute = "disabled";
+						}
+						else if (activity.Capacity == -1) // 無需報名 (特殊值)
+						{
+							buttonText = "無需報名";
+							disabledAttribute = "disabled";
+						}
+						else if (activity.Capacity == 0) // 名額已滿
+						{
+							buttonText = "名額已滿";
+							disabledAttribute = "disabled";
+						}
+						else // activity.Capacity > 0 且在報名時間內 (可以報名)
+						{
+							// 這是可以報名的情況，保持預設的 "點我報名" 和不禁用
+						}
+					}
+
+					<button type="button"
+							class="@buttonClass"
+							data-activity-id="@activity.ActivityId" @* <--- 關鍵：綁定活動ID *@
+							@Html.Raw(disabledAttribute)>
+						@* <--- 應用disabled屬性 *@
+						@buttonText
+					</button>
+					@* ============================== *@
+				</div>
+			</div>
+		</div>
+	}
+</div>
+
+@* 確保這個 partialMeta div 在主頁面載入後，JS 可以讀取到 *@
+<div id="partialMeta" data-total-pages="@Model.TotalPages" data-current-page="@Model.CurrentPage" style="display:none;"></div>

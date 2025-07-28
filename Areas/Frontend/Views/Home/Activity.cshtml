@@ -1,0 +1,596 @@
+﻿@model test2.Areas.Frontend.Models.ViewModels.ActivityPagedViewModel; // 修改 Model 型別
+
+@{
+    // 直接從 Model 取值
+    var currentPage = Model.CurrentPage;
+    var pageSize = Model.PageSize;
+    var displayMode = Model.DisplayMode;
+    var totalPages = Model.TotalPages;
+    var totalCount = Model.TotalCount;
+}
+
+
+@await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_modal.cshtml")
+
+<div class="search-section py-5 d-flex align-items-center justify-content-center mt-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="input-group search-container-bs">
+                    <input type="text" class="form-control rounded-pill-start border-0 py-2 px-4"
+                           placeholder="搜尋..." aria-label="搜尋" id="input-query">
+                    <button class="btn btn-search rounded-pill-end" type="button" id="search-btn">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="activities-section mt-4">
+    <div class="container">
+        <h2 class="text-center mb-4 section-title-bs">最新活動</h2>
+
+        <div class="mb-4 d-flex justify-content-between align-items-center activity-categories-bs">
+            <div>
+                <button type="button" class="btn btn-category-bs active me-2 mb-2">全部</button>
+                <button type="button" class="btn btn-category-bs me-2 mb-2">講座</button>
+                <button type="button" class="btn btn-category-bs me-2 mb-2">分享會</button>
+                <button type="button" class="btn btn-category-bs me-2 mb-2">展覽</button>
+                @* <button type="button" class="btn btn-category-bs me-2 mb-2">活動</button> *@
+                <button type="button" class="btn btn-category-bs mb-2">影片欣賞</button>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <button type="button" class="btn btn-display-toggle active me-2">
+                    <i class="bi-grid-fill"></i> @* 圖片式 *@
+                </button>
+                <button type="button" class="btn btn-display-toggle">
+                    <i class="bi bi-list"></i> @* 條列式 *@
+                </button>
+            </div>
+        </div>
+
+        <div id="activityListContainer">
+            @if (displayMode == "image")
+            {
+                @await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_activityList_image.cshtml", Model)
+            }
+            else if (displayMode == "table")
+            {
+                @await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_activityList_table.cshtml", Model)
+            }
+        </div>
+
+        <div class="pagination-container mb-5">
+            <div class="pagination-info me-3">
+                <span>第</span> <span>@currentPage</span> / <span>@totalPages</span> <span>頁</span>
+            </div>
+            <div class="pagination-buttons">
+                <button type="button" class="btn page-control-btn disabled">
+                    <i class="bi bi-caret-left-fill"></i>
+                </button>
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <button type="button" class="btn @(i == currentPage ? "active" : null)">@i</button>
+                }
+                <button type="button" class="btn page-control-btn">
+                    <i class="bi bi-caret-right-fill"></i>
+                </button>
+            </div>
+            <div class="pagination-select-page">
+                <label for="page-selector">跳至</label>
+                <select class="form-select" id="page-selector">
+                    @for (int i = 1; i <= totalPages; i++)
+                    {
+                        if (i == 1)
+                        {
+                            <option value="1" selected>1</option>
+                            continue;
+                        }
+                        <option value="@i">@i</option>
+                    }
+                </select>
+                <span class="ms-2">頁</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*  Modal 的 HTML 結構  *@
+<div class="modal fade" id="activityRegistrationMessageModal" tabindex="-1" aria-labelledby="activityRegistrationMessageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="activityRegistrationMessageModalLabel">報名結果</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="message-content"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="redirect-btn" type="button" class="btn btn-primary">立即跳轉</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // 全域變數，用於管理當前頁碼和總頁數
+        // 這兩個變數在頁面第一次載入時會從 Model 取得值
+        // 後續會根據 AJAX 請求 Partial View 後，從 Partial View 的 partialMeta 元素更新
+        let currentPage = @Model.CurrentPage;
+        let totalPages = @Model.TotalPages;
+
+        $(document).ready(function () {
+            // 在這裡宣告所有 DOM 元素的變數，確保它們在 DOM 完全載入後才被選取
+            const modeBtns = document.querySelectorAll('.btn-display-toggle');
+            const imageModeBtn = document.querySelector('.btn-display-toggle:nth-child(1)');
+            const tableModeBtn = document.querySelector('.btn-display-toggle:nth-child(2)');
+            const prevPageBtn = document.querySelector('.page-control-btn:nth-child(1)');
+            const nextPageBtn = document.querySelector('.page-control-btn:last-child');
+            const pageSelector = document.getElementById('page-selector'); // 跳至頁碼的下拉選單
+            const typeBtns = document.querySelectorAll('.btn-category-bs');
+            const searchInput = document.getElementById('input-query');
+            const searchBtn = document.getElementById('search-btn');
+
+            // 找出頁碼按鈕原本的 CSS 隔離 ID
+            let cssScopeId = '';
+            const initialPageButtons = document.querySelectorAll('.pagination-buttons .btn:not(.page-control-btn)');
+            if (initialPageButtons.length > 0) {
+                Array.from(initialPageButtons[0].attributes).forEach(attr => {
+                    if (attr.name.startsWith('b-')) {
+                        cssScopeId = attr.name;
+                    }
+                });
+            }
+
+            // 初始化按鈕的 active 狀態，根據目前 displayMode
+            const initialDisplayMode = "@Model.DisplayMode"; // 從 Model 取得初始模式
+            if (initialDisplayMode === "table") {
+                if (imageModeBtn) imageModeBtn.classList.remove('active');
+                if (tableModeBtn) tableModeBtn.classList.add('active');
+            } else { // 預設為 image
+                if (imageModeBtn) imageModeBtn.classList.add('active');
+                if (tableModeBtn) tableModeBtn.classList.remove('active');
+            }
+
+            // ========================= 報名按鈕點擊事件處理 =========================
+            $(document).on('click', '.register-activity-btn', async function () {
+                const $clickedBtn = $(this);
+                const originalBtnText = $clickedBtn.text();
+                $clickedBtn.prop('disabled', true).text('處理中...');
+
+                const activityId = $clickedBtn.data('activity-id');
+
+                let shouldRestoreButton = true; // 新增一個旗標，預設為 true (需要恢復按鈕)
+
+                try {
+                    const response = await $.ajax({
+                        url: '@Url.Action("RegisterActivity", "Home", new { area = "Frontend" })',
+                        type: 'POST',
+                        data: { activityId: activityId }
+                    });
+
+                    const $messageContent = $('#message-content');
+                    const $redirectBtn = $('#redirect-btn');
+
+                    const activityRegistrationMessageModal = new bootstrap.Modal(document.getElementById('activityRegistrationMessageModal'));
+
+                    if (response.success) {
+                        // 報名成功
+                        $messageContent.text(response.message);
+                        $redirectBtn.hide(); // 成功時不需要跳轉按鈕
+
+                        // 報名成功後，重新載入活動列表以更新名額和按鈕狀態
+                        await updateActivityList(currentPage, getCurrentDisplayMode(), getCurrentDisplayType(), $('#input-query').val());
+                        updatePaginationButtons();
+                        shouldRestoreButton = false; // 成功且重新載入列表，所以不需要在 finally 恢復按鈕
+
+                    } else {
+                        // 報名失敗
+                        $messageContent.text(response.message);
+                        if (response.redirectToLogin) {
+                            // 後端要求跳轉到登入頁面 (未登入)
+                            $redirectBtn.show(); // 顯示立即跳轉按鈕
+
+                            // 動態設定立即跳轉按鈕的點擊事件，指向後端提供的 URL
+                            $redirectBtn.off('click').on('click', function() {
+                                window.location.href = response.redirectToLogin;
+                            });
+                            // 未登入需跳轉，按鈕也應該恢復，因為使用者可能會點擊 Modal 的關閉或立即跳轉
+                            shouldRestoreButton = true; // 確保按鈕恢復
+                        } else {
+                            // 其他錯誤訊息 (名額已滿、重複報名等)
+                            $redirectBtn.hide();
+                            shouldRestoreButton = true; // 確保按鈕恢復
+                        }
+                    }
+                    activityRegistrationMessageModal.show();
+
+                } catch (error) {
+                    console.error('AJAX 請求失敗:', error);
+                    $('#message-content').text('報名時發生了不明錯誤，請稍後再試。');
+                    $('#redirect-btn').hide();
+                    new bootstrap.Modal(document.getElementById('activityRegistrationMessageModal')).show();
+                    shouldRestoreButton = true; // AJAX 失敗時，按鈕也應該恢復
+                } finally {
+                    // 只有當 shouldRestoreButton 為 true 時才恢復按鈕狀態
+                    if (shouldRestoreButton) {
+                        $clickedBtn.prop('disabled', false).text(originalBtnText);
+                    }
+                }
+            });
+
+            // =========================================================================
+
+
+            // ========================= 模式切換、搜尋、分頁、類別篩選事件處理 =========================
+
+            if (imageModeBtn) {
+                imageModeBtn.addEventListener('click', async () => {
+                    currentPage = 1;
+                    await updateActivityList(currentPage, 'image', getCurrentDisplayType(), $('#input-query').val());
+                    updateModeBtns("image");
+                    updatePaginationButtons();
+                });
+            }
+            if (tableModeBtn) {
+                tableModeBtn.addEventListener('click', async () => {
+                    currentPage = 1;
+                    await updateActivityList(currentPage, 'table', getCurrentDisplayType(), $('#input-query').val());
+                    updateModeBtns("table");
+                    updatePaginationButtons();
+                });
+            }
+
+            if (prevPageBtn) {
+                prevPageBtn.addEventListener('click', async () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        await updateActivityList(currentPage, getCurrentDisplayMode(), getCurrentDisplayType(), $('#input-query').val());
+                        updatePaginationButtons();
+                    }
+                });
+            }
+
+            if (nextPageBtn) {
+                nextPageBtn.addEventListener('click', async () => {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        await updateActivityList(currentPage, getCurrentDisplayMode(), getCurrentDisplayType(), $('#input-query').val());
+                        updatePaginationButtons();
+                    }
+                });
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('keydown', async (event) => {
+                    if (event.key === 'Enter') {
+                        const searchQuery = searchInput.value;
+                        currentPage = 1;
+                        await updateActivityList(currentPage, getCurrentDisplayMode(), getCurrentDisplayType(), searchQuery);
+                        updatePaginationButtons();
+                    }
+                });
+            }
+
+            if (searchBtn) {
+                searchBtn.addEventListener('click', async () => {
+                    const searchQuery = searchInput.value;
+                    currentPage = 1;
+                    await updateActivityList(currentPage, getCurrentDisplayMode(), getCurrentDisplayType(), searchQuery);
+                    updatePaginationButtons();
+                });
+            }
+
+            // 初始化監聽跳頁下拉選單
+
+            if (pageSelector) {
+                pageSelector.addEventListener('change', async (event) => {
+                    const page = parseInt(event.target.value);
+                    if ( page !== currentPage ) {
+                        currentPage = page;
+                        await updateActivityList(currentPage, getCurrentDisplayMode(), getCurrentDisplayType());
+                        updatePaginationButtons();
+                    }
+                });
+            }
+
+            // 更新頁碼按鈕的狀態
+            const pageBtnContainer = document.querySelector(".pagination-buttons");
+
+            // 確保 pageBtnContainer 已經被選取
+            if (pageBtnContainer) {
+                pageBtnContainer.addEventListener('click', async (event) => {
+                    // 檢查點擊的目標是不是頁碼按鈕（非控制按鈕）
+                    if (event.target.classList.contains('btn') && !event.target.classList.contains('page-control-btn')) {
+                        const page = parseInt(event.target.textContent);
+                        if (!isNaN(page) && page > 0 && page !== currentPage) { // 增加驗證，避免點到 ... 等非數字按鈕
+                            currentPage = page;
+                            await updateActivityList(currentPage, getCurrentDisplayMode(), getCurrentDisplayType(), $('#input-query').val());
+                            updatePaginationButtons();
+                        }
+                    }
+                });
+            }
+
+            document.querySelectorAll('.pagination-buttons .btn:not(.page-control-btn)').forEach(btn => {
+                btn.addEventListener('click', async (event) => {
+                    const page = parseInt(event.target.textContent);
+                    if (page !== currentPage) {
+                        currentPage = page;
+                        await updateActivityList(currentPage, getCurrentDisplayMode(), getCurrentDisplayType(), $('#input-query').val());
+                        updatePaginationButtons();
+                    }
+                });
+            });
+
+            typeBtns.forEach(btn => {
+                btn.addEventListener('click', async (event) => {
+                    const type = event.target.textContent.trim();
+                    if (type !== getCurrentDisplayType()) {
+                        currentPage = 1;
+                        await updateActivityList(currentPage, getCurrentDisplayMode(), type, $('#input-query').val());
+                        updateTypeBtns(type);
+                        updatePaginationButtons();
+                    }
+                });
+            });
+
+            // ========================= 輔助函數 (Helper Functions) =========================
+
+            function updateModeBtns(mode) {
+                modeBtns.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                if (mode === "image") {
+                    imageModeBtn.classList.add('active');
+                } else if (mode === "table") {
+                    tableModeBtn.classList.add('active');
+                }
+            }
+
+            function updateTypeBtns(type) {
+                typeBtns.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                const targetTypeBtn = Array.from(document.querySelectorAll('.btn-category-bs')).find(btn => btn.textContent.trim() === type);
+                if (targetTypeBtn) {
+                    targetTypeBtn.classList.add('active');
+                }
+            }
+
+            function updatePaginationButtons() {
+
+            // 更新顯示「第 N / M 頁」的資訊
+            const paginationInfo = document.querySelector('.pagination-info');
+            if (paginationInfo) {
+                if (totalPages === 0) {
+                    paginationInfo.innerHTML = `<span>第 0 </span> <span> / </span><span>${totalPages}</span> <span>頁</span>`;
+                } else {
+                    paginationInfo.innerHTML = `<span>第</span> <span>${currentPage}</span> / <span>${totalPages}</span> <span>頁</span>`;
+                }
+            }
+
+            // 更新上一頁/下一頁按鈕的 disabled 狀態
+            if (prevPageBtn) {
+                if (totalPages === 0 || currentPage === 1) {
+                    prevPageBtn.classList.add('disabled');
+                } else {
+                    prevPageBtn.classList.remove('disabled');
+                }
+            }
+            if (nextPageBtn) {
+                if (totalPages === 0 || currentPage === totalPages) {
+                    nextPageBtn.classList.add('disabled');
+                } else {
+                    nextPageBtn.classList.remove('disabled');
+                }
+            }
+
+            // 更新頁碼按鈕的狀態
+            const pageBtnContainer = document.querySelector(".pagination-buttons");
+
+            if (pageBtnContainer) {
+                // 移除所有頁碼按鈕 (除了前後控制按鈕)
+                Array.from(pageBtnContainer.children).forEach(child => {
+                    if (!child.classList.contains('page-control-btn')) {
+                        child.remove();
+                    }
+                });
+
+                // --- 限制顯示頁碼數量 ---
+                const maxPagesToShow = 5; // 可以調整這個數字，例如顯示 5 個頁碼按鈕
+                let startPage, endPage;
+
+                if (totalPages <= maxPagesToShow) {
+                    // 如果總頁數不多，直接顯示所有頁碼
+                    startPage = 1;
+                    endPage = totalPages;
+                } else {
+                    // 計算顯示範圍
+                    const half = Math.floor(maxPagesToShow / 2);
+                    startPage = Math.max(1, currentPage - half);
+                    endPage = Math.min(totalPages, currentPage + half);
+
+                    // 調整邊界情況
+                    if (endPage - startPage + 1 < maxPagesToShow) {
+                        if (startPage === 1) {
+                            endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+                        } else if (endPage === totalPages) {
+                            startPage = Math.max(1, totalPages - maxPagesToShow + 1);
+                        }
+                    }
+                }
+
+                // 重新生成頁碼按鈕
+                // 先處理第一頁和「...」
+                if (startPage > 1) {
+                    const firstPageBtn = createPaginationButton(1, currentPage);
+                    pageBtnContainer.insertBefore(firstPageBtn, nextPageBtn);
+                    if (startPage > 2) {
+                        const ellipsisStart = createEllipsisButton();
+                        pageBtnContainer.insertBefore(ellipsisStart, nextPageBtn);
+                    }
+                }
+
+                // 產生中間的頁碼按鈕
+                for (let i = startPage; i <= endPage; i++) {
+                    const btn = createPaginationButton(i, currentPage);
+                    pageBtnContainer.insertBefore(btn, nextPageBtn);
+                }
+
+                // 再處理「...」和最後一頁
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        const ellipsisEnd = createEllipsisButton();
+                        pageBtnContainer.insertBefore(ellipsisEnd, nextPageBtn);
+                    }
+                    const lastPageBtn = createPaginationButton(totalPages, currentPage);
+                    pageBtnContainer.insertBefore(lastPageBtn, nextPageBtn);
+                }
+
+            } else {
+                console.error("找不到包含 pagination buttons 的 Html 元素，請確認 Html 結構");
+            }
+
+            // 更新跳頁下拉選單的選項狀態
+            const pageSelectorContainer = document.getElementById('page-selector');
+            if (pageSelectorContainer) {
+                // 清空頁碼選項
+                Array.from(pageSelectorContainer.children).forEach(option => {
+                    option.remove();
+                });
+
+                // 重新生成頁碼選項
+                if (totalPages === 0) {
+                    const option = document.createElement('option');
+                    option.setAttribute('selected', '');
+                    option.textContent = 0;
+                    pageSelectorContainer.append(option);
+                } else {
+                    for (let i = 1; i <= totalPages; i++) {
+                        const option = document.createElement('option');
+                        option.setAttribute('value', i);
+                        if (i === currentPage) {
+                            option.setAttribute('selected', '');
+                        }
+                        option.textContent = i;
+                        pageSelectorContainer.append(option);
+                    }
+                }
+            }
+        }
+
+            // 輔助函數：創建頁碼按鈕
+            function createPaginationButton(pageNumber, currentPage) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.classList.add('btn');
+                if (pageNumber === currentPage) {
+                    btn.classList.add('active');
+                }
+                // 加上 CSS 隔離 ID
+                if (cssScopeId) { // 假設 cssScopeId 在全局或父作用域中定義
+                    btn.setAttribute(cssScopeId, '');
+                }
+                btn.textContent = pageNumber;
+                return btn;
+            }
+
+            // 輔助函數：創建省略號按鈕
+            function createEllipsisButton() {
+                const ellipsis = document.createElement('span');
+                ellipsis.classList.add('pagination-ellipsis'); // 可以為這個元素添加樣式
+                ellipsis.textContent = '...';
+                // 加上 CSS 隔離 ID
+                if (cssScopeId) {
+                    ellipsis.setAttribute(cssScopeId, '');
+                }
+                return ellipsis;
+            }
+
+            // 初次載入時更新分頁按鈕狀態
+            updatePaginationButtons();
+
+        }); // $(document).ready 函式結束
+
+        function getCurrentDisplayMode() {
+            const currentActiveButton = document.querySelector('.btn-display-toggle.active');
+            let currentMode = 'image';
+
+            if (currentActiveButton) {
+                const iconClass = currentActiveButton.querySelector('i').classList;
+                if (iconClass.contains('bi-grid-fill')) {
+                    currentMode = 'image';
+                } else if (iconClass.contains('bi-list')) {
+                    currentMode = 'table';
+                }
+            }
+            return currentMode;
+        }
+
+        function getCurrentDisplayType() {
+            const currentActiveBtn = document.querySelector('.btn-category-bs.active');
+            let currentType = "全部";
+
+            if (currentActiveBtn) {
+                currentType = currentActiveBtn.textContent.trim();
+            }
+            return currentType;
+        }
+
+        async function updateActivityList(pageNumber, mode, type, searchQuery = null) {
+            try {
+                const formData = new FormData();
+                formData.append('page', pageNumber);
+                formData.append('displayMode', mode);
+                formData.append('displayType', type);
+                formData.append('searchQuery', searchQuery);
+
+                const response = await fetch('/Frontend/Home/updateActivityList', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP 錯誤! 狀態碼: ${response.status} - ${errorText}`);
+                }
+
+                const newHtml = await response.text();
+                const container = document.getElementById('activityListContainer');
+
+                if (container) {
+                    container.innerHTML = newHtml;
+                    Array.from(container.querySelectorAll("script"))
+                        .forEach(oldScript => {
+                            const newScript = document.createElement("script");
+                            Array.from(oldScript.attributes)
+                                .forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                            newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                            oldScript.parentNode.replaceChild(newScript, oldScript);
+                        });
+                } else {
+                    console.error("找不到 activityListContainer 元素，請確認 HTML 結構。");
+                }
+
+                const partialMeta = document.getElementById('partialMeta');
+                if (partialMeta) {
+                    totalPages = parseInt(partialMeta.dataset.totalPages);
+                    currentPage = parseInt(partialMeta.dataset.currentPage);
+                }
+
+            } catch (error) {
+                console.error('更新活動列表時發生錯誤:', error);
+                alert(`更新活動列表失敗，錯誤訊息: ${error.message}`);
+            }
+        }
+    </script>
+}

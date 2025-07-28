@@ -1,0 +1,12 @@
+﻿.btn_dFav {
+    background-color: var(--c-red----100);
+}
+
+    .btn_dFav:focus {
+        background-color: var(--c-red----100);
+        color: white;
+    }
+
+    .btn_dFav:hover {
+        color: white;
+    }

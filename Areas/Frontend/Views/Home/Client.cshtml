@@ -1,0 +1,110 @@
+﻿@{
+    Layout = "~/Areas/Frontend/Views/Shared/_Layout/_Client.cshtml";
+}
+
+@await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_modal.cshtml")
+@await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_formC.cshtml")
+@await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_formF.cshtml")
+@await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_formR.cshtml")
+
+<div class="page-container">
+    <!-- 左側 Sidebar -->
+    <div class="sidebar rounded-5" style="margin-left: 5vw">
+        <h4 class="text-center py-4">林間書語</h4>
+        <div class="flex-shrink-0  d-flex flex-column" style="height: 50%;">
+            <nav class="nav flex-column nav-pills flex-grow-1" id="sidebarTabs" role="tablist">
+                <button class="nav-link flex-grow-1 active" id="btn-tab0" data-bs-toggle="pill" data-bs-target="#tab0" type="button" role="tab">
+                    會員資訊
+                </button>
+                <button class="nav-link flex-grow-1" id="btn-tab1" data-bs-toggle="pill" data-bs-target="#tab1" type="button" role="tab">
+                    我的最愛
+                </button>
+                <button class="nav-link flex-grow-1" id="btn-tab2" data-bs-toggle="pill" data-bs-target="#tab2" type="button" role="tab">
+                    預約紀錄
+                </button>
+                <button class="nav-link flex-grow-1" id="btn-tab3" data-bs-toggle="pill" data-bs-target="#tab3" type="button" role="tab">
+                    歷史紀錄
+                </button>
+                <button class="nav-link flex-grow-1" id="btn-tab4" data-bs-toggle="pill" data-bs-target="#tab4" type="button" role="tab">
+                    訊息中心
+                </button>
+                <button class="nav-link flex-grow-1" id="btn-tab5" type="button" role="tab">
+                    登出
+                </button>
+                <form asp-area="Frontend" asp-controller="Access" asp-action="Logout" method="post">
+                    <button type="submit" class="d-none" id="btn_logout"></button>
+                </form>
+            </nav>
+        </div>
+    </div>
+
+    <!-- 右側 內容 -->
+    <div class="content container-fluid" style="margin-right: 5vw">
+        <div class="tab-content" id="sidebarTabsContent">
+            <div class="tab-pane active" id="tab0" role="tabpanel">
+                @await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_clientHome.cshtml")
+            </div>
+            <div class="tab-pane" id="tab1" role="tabpanel">
+                @await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_clientFav.cshtml")
+            </div>
+            <div class="tab-pane" id="tab2" role="tabpanel">
+                @await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_clientReserve.cshtml")
+            </div>
+            <div class="tab-pane " id="tab3" role="tabpanel">
+                @await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_clientBorrow.cshtml")
+            </div>
+            <div class="tab-pane" id="tab4" role="tabpanel">
+                @await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_clientMesg.cshtml")
+            </div>
+        </div>
+    </div>
+
+    @* Modal 的 HTML 結構 *@
+    <div class="modal fade" id="registrationMessageModal" tabindex="-1" aria-labelledby="registrationMessageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registrationMessageModalLabel">註冊結果</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="MessageContent"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function() {
+            // 從 TempData 取得旗標和訊息
+            var showModal = @((bool)(TempData["ShowModal"] ?? false) ? "true" : "false");
+            var result = "@Html.Raw((string)TempData["Result"] == "success" ? "success" : "fail")";
+            var resultMessage = "@Html.Raw(TempData["ResultMessage"] ?? "")";
+
+            if (showModal) {
+                // 從 TempData 取得旗標和訊息
+                var showModal = @((bool)(TempData["ShowModal"] ?? false) ? "true" : "false");
+                var result = "@Html.Raw((string)TempData["Result"] == "success" ? "success" : "fail")";
+                var resultMessage = "@Html.Raw(TempData["ResultMessage"] ?? "")";
+
+                if (showModal) {
+                    if (result === "success"){
+                        $('#MessageContent').text(resultMessage); // 將訊息顯示在 Modal 內容中
+                        var myModal = new bootstrap.Modal(document.getElementById('registrationMessageModal'));
+                        myModal.show(); // 顯示 Modal
+                    }
+                    else if (result === "fail"){
+                        $('#MessageContent').text(resultMessage); // 將訊息顯示在 Modal 內容中
+                        var myModal = new bootstrap.Modal(document.getElementById('registrationMessageModal'));
+                        myModal.show(); // 顯示 Modal
+                    }
+                }
+            }
+        })
+    </script>
+}

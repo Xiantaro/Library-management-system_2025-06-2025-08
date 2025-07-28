@@ -1,0 +1,286 @@
+﻿@model test2.Areas.Frontend.Models.ViewModels.ActivityViewModel;
+
+@await Html.PartialAsync("~/Areas/Frontend/Views/Shared/_Partial/_modal.cshtml")
+
+<div class="mt-5 back-to-list">
+    <a href="@Url.Action("Activity", "Home")"><i class="bi bi-arrow-left"></i> 返回活動列表</a>
+</div>
+
+<div class="activity-detail-container">
+    @if (Model.ActivityTitle != null)
+    {
+        <h1 class="activity-title">@Model.ActivityTitle</h1>
+    }
+    <div class="activity-header-meta" style="font-size: 1em;">
+        @if (Model.StartDate != default(DateTime) && Model.EndDate != default(DateTime))
+        {
+            <span class="me-4"><i class="bi bi-calendar-event"></i> 活動日期：@Model.StartDate.ToString() ~ @Model.EndDate.ToString()</span>
+        }
+        else
+        {
+            <span class="me-4"><i class="bi bi-calendar-event"></i> 活動日期：目前尚無活動日期</span>
+        }
+
+        @* <span class="me-4"><i class="bi bi-geo-alt-fill"></i> 活動地點：@Model.ActivityLocation </span> *@
+
+        @if (Model.Audience != null)
+        {
+            <span><i class="bi bi-person-fill"></i> 適用對象：@Model.Audience.Audience1</span>
+        }
+        else
+        {
+            <span><i class="bi bi-person-fill"></i> 適用對象：尚無</span>
+        }
+
+    </div>
+
+    @if (Model.ActivityImgBase64 != null)
+    {
+        <img src="data:image/jpeg;base64,@Model.ActivityImgBase64" alt="活動圖片" class="activity-image">
+    }
+    else
+    {
+        <img src="https://picsum.photos/800/400?random=10" alt="活動圖片" class="activity-image">
+    }
+
+    <h3 class="section-heading">活動說明</h3>
+    <div class="activity-content">
+        @if (Model.ActivityDesc != null)
+        {
+            <p style="white-space: pre-wrap;">@Model.ActivityDesc</p>
+        }
+        else
+        {
+            <p>親愛的讀者們，準備好成為借閱超人了嗎？國立公共資訊圖書館特別企劃「電子書VIP會員活動」，邀請您一同深入數位閱讀的世界！本次活動旨在鼓勵廣大讀者善用本館豐富的電子書資源，提升閱讀樂趣與知識廣度。</p>
+            <p>活動期間，只要您是本館電子書平台VIP會員，並達成指定借閱任務，就有機會獲得精美禮品與獨家榮譽。無論您是小說愛好者、學術研究者，或是喜愛各類知識的探索者，都能在我們的電子書庫中找到心儀的內容。</p>
+            <p>我們將定期公布最新任務與排行榜，讓您在閱讀的同時，也能感受到競爭的樂趣。歡迎所有對電子書有興趣的朋友們踴躍參與，一同成為數位閱讀的領航者！</p>
+            <ul>
+                <li>活動目標：推廣電子書閱讀，提升會員活躍度。</li>
+                <li>參與對象：國立公共資訊圖書館電子書VIP會員。</li>
+                <li>獎勵機制：依借閱量及參與度給予不同等級獎勵，詳情請參考活動官網。</li>
+            </ul>
+        }
+    </div>
+
+    <!-- <h3 class="section-heading">活動資訊概覽</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="info-item">
+                <strong><i class="bi bi-person-fill"></i> 適用對象：</strong>一般大眾
+            </div>
+            <div class="info-item">
+                <strong><i class="bi bi-tag-fill"></i> 活動類別：</strong>
+                <span class="tag-badge">活動</span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-item">
+                <strong><i class="bi bi-telephone-fill"></i> 聯絡電話：</strong>(04)2262-5100
+            </div>
+            <div class="info-item">
+                <strong><i class="bi bi-building"></i> 主辦單位：</strong>國立公共資訊圖書館
+            </div>
+        </div>
+    </div> -->
+
+    <div class="register-box">
+        <h4><i class="bi bi-clipboard-check"></i> 報名資訊</h4>
+        @* <div class="info-item">
+            
+            <strong>報名起訖：</strong>無需報名
+        </div> *@
+        <div class="info-item">
+            @if (Model.Capacity != 0 && DateTime.Now >= Model.StartDate && DateTime.Now <= Model.EndDate)
+            {
+                <p>
+                    <strong>報名狀態：</strong>開放中
+                </p>
+            }
+            else
+            {
+                <p>
+                    <strong>報名狀態：</strong>未開放報名
+                </p>
+            }
+        </div>
+        <div class="info-item">
+            @if (Model.Capacity == -1)
+            {
+                <p>
+                    <strong>剩餘名額：</strong>無需報名
+                </p>
+            }
+            else if (DateTime.Now < Model.StartDate)
+            {
+                <p>
+                    <strong>剩餘名額：</strong>活動尚未開始
+                </p>
+            }
+            else if (DateTime.Now > Model.EndDate)
+            {
+                <p>
+                    <strong>剩餘名額：</strong>活動已結束
+                </p>
+            }
+            else
+            {
+                <p>
+                    <strong>剩餘名額：</strong>@Model.Capacity
+                </p>
+            }
+        </div>
+        @if ((DateTime.Now >= Model.StartDate && DateTime.Now <= Model.EndDate) != true)
+        {
+            <button type="button" class="btn btn-primary register-btn-detail disabled">不在報名時間內</button>
+            <small class="d-block text-center mt-2 text-muted">目前不再活動報名時間內，請於活動報名期間內報名。</small>
+        }
+        else if (Model.Capacity == -1)
+        {
+            <button type="button" class="btn btn-primary register-btn-detail disabled">無需報名</button>
+            <small class="d-block text-center mt-2 text-muted">本活動無需事前報名，請於活動期間自由參與。</small>
+        }
+        else if (Model.Capacity == 0)
+        {
+            <button type="button" class="btn btn-primary register-btn-detail disabled">報名已截止</button>
+            <small class="d-block text-center mt-2 text-muted">本活動報名人數已滿，下次請早。</small>
+        }
+        else
+        {
+            <button type="button" class="btn btn-primary register-btn-detail"
+                    data-activity-id="@Model.ActivityId" id="registerActivityDetailBtn">
+                點我報名
+            </button>
+            <small class="d-block text-center mt-2 text-muted">本活動正在開放報名，心動不如馬上行動！</small>
+        }
+
+    </div>
+
+    @*  Modal 的 HTML 結構  *@
+    <div class="modal fade" id="activityRegistrationMessageModal" tabindex="-1" aria-labelledby="activityRegistrationMessageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="activityRegistrationMessageModalLabel">報名結果</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="message-content"></p>
+                </div>
+                <div class="modal-footer">
+                    <button id="redirect-btn" type="button" class="btn btn-primary">立即跳轉</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            const registerDetailBtn = document.getElementById('registerActivityDetailBtn'); // 取得詳細頁的報名按鈕
+
+            // ========================= 報名處理函式 =========================
+            async function handleActivityRegistration(activityId, $clickedBtn, originalBtnText) {
+                $clickedBtn.prop('disabled', true).text('處理中...'); // 按鈕進入處理中狀態
+
+                try {
+                    const response = await $.ajax({
+                        url: '@Url.Action("RegisterActivity", "Home", new { area = "Frontend" })',
+                        type: 'POST',
+                        data: { activityId: activityId }
+                    });
+
+                    const $messageContent = $('#message-content');
+                    const $redirectBtn = $('#redirect-btn');
+                    // 確保 modal 的實例只建立一次，並且透過變數引用
+                    const activityRegistrationMessageModal = new bootstrap.Modal(document.getElementById('activityRegistrationMessageModal'));
+
+                    if (response.success) {
+                        // 報名成功
+                        $messageContent.text(response.message);
+                        $redirectBtn.hide(); // 成功時不需要跳轉按鈕
+
+                        // 成功後，更新剩餘名額顯示
+                        const capacityElement = $('.register-box p:contains("剩餘名額：")');
+                        if (capacityElement.length > 0) {
+                            let currentCapacityText = capacityElement.text().replace('剩餘名額：', '').trim();
+                            if (currentCapacityText !== '無需報名') {
+                                let currentCapacity = parseInt(currentCapacityText);
+                                if (!isNaN(currentCapacity) && currentCapacity > 0) {
+                                    currentCapacity--;
+                                    capacityElement.html(`<strong>剩餘名額：</strong>${currentCapacity}`);
+
+                                    // 如果名額變為0，還要更新按鈕狀態為「報名已截止」
+                                    if (currentCapacity === 0) {
+                                        // 檢查按鈕是否仍然可選中 (未被其他條件禁用)
+                                        if (registerDetailBtn && !registerDetailBtn.classList.contains('disabled')) {
+                                            registerDetailBtn.classList.add('disabled');
+                                            registerDetailBtn.textContent = '報名已截止';
+                                        }
+                                        // 更新小字提示
+                                        const smallText = $('.register-box small.text-muted');
+                                        if (smallText.length > 0) {
+                                            smallText.text('本活動報名人數已滿，下次請早。');
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // 報名失敗
+                        $messageContent.text(response.message);
+                        if (response.redirectToLogin) {
+                            // 後端要求跳轉到登入頁面 (未登入)
+                            $redirectBtn.show(); // 顯示立即跳轉按鈕
+                            $redirectBtn.off('click').on('click', function() {
+                                window.location.href = response.redirectToLogin;
+                            });
+                            $clickedBtn.prop('disabled', false).text(originalBtnText);
+                        } else {
+                            // 其他錯誤訊息 (名額已滿、重複報名等)
+                            $redirectBtn.hide();
+                        }
+                        // 失敗時，恢復按鈕狀態，除非是要跳轉到登入頁
+                        if (!response.redirectToLogin) {
+                             $clickedBtn.prop('disabled', false).text(originalBtnText);
+                        }
+                    }
+                    activityRegistrationMessageModal.show(); // 顯示彈跳視窗
+
+                } catch (error) {
+                    console.error('AJAX 請求失敗:', error);
+                    $('#message-content').text('報名時發生了不明錯誤，請稍後再試。');
+                    $('#redirect-btn').hide();
+                    new bootstrap.Modal(document.getElementById('activityRegistrationMessageModal')).show(); // 顯示錯誤彈跳視窗
+                    $clickedBtn.prop('disabled', false).text(originalBtnText); // 發生錯誤時恢復按鈕狀態
+                }
+            }
+            // =========================================================================
+
+
+            // ========================= 報名按鈕點擊事件綁定 (活動詳細頁) =========================
+            // 由於這是在單一活動詳細頁，所以直接綁定 ID 是最精確的
+            if (registerDetailBtn) { // 確認按鈕存在才綁定事件
+                registerDetailBtn.addEventListener('click', async function () {
+                    const $clickedBtn = $(this);
+                    const originalBtnText = $clickedBtn.text();
+                    const activityId = parseInt($clickedBtn.data('activity-id')); // 取得活動 ID
+
+                    if (!isNaN(activityId)) {
+                        await handleActivityRegistration(activityId, $clickedBtn, originalBtnText);
+                    } else {
+                        console.error("無法取得活動 ID，請檢查 data-activity-id 屬性。");
+                        // 可以考慮這裡也彈出一個錯誤訊息給使用者
+                        const $messageContent = $('#message-content');
+                        const $redirectBtn = $('#redirect-btn');
+                        $messageContent.text('抱歉，無法識別活動資訊，請聯繫客服。');
+                        $redirectBtn.hide();
+                        new bootstrap.Modal(document.getElementById('activityRegistrationMessageModal')).show();
+                    }
+                });
+            }
+        });
+    </script>
+}

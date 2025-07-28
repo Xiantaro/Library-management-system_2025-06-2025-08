@@ -1,0 +1,39 @@
+﻿<div class="row">
+    <div class="col-4">
+        <h1 class="fw-bold">借閱模式</h1>
+        <hr />
+        <form id="borrwoModeForm" class="mt-1">
+            <div class="col-12">
+                <label class="fs-2 fw-bold" for="borrwoMode_UserID">借閱者ID:</label>
+                <div class="input-group">
+                    <input id="borrwoMode_UserID" type="number" name="borrwoMode_UserID" class="form-control fs-2" />
+                    <button class="btn btn-outline-secondary fs-2" type="button" id="borrwoMode_CancelUserIDBtn">&times;</button>
+                </div>
+            </div>
+            <div class="col-12">
+                <label class="fs-2 fw-bold" for="borrwoMode_BookCode">書籍編號: </label>
+                <div class="input-group">
+                    <input id="borrwoMode_BookCode" type="text" name="borrwoMode_BookCode" class="form-control fs-3"  maxlength="21"/>
+                    <button class="btn btn-outline-secondary fs-2" type="button" id="borrwoMode_CancelBookIdBtn">&times;</button>
+                </div>
+            </div>
+            @*<div class="my-4">
+                <button id="borrowSend" type="button" class="btn btn-success btn-lg" value="borrow">借閱</button>
+            </div>*@
+            <div class="row col-5 mt-3 mx-auto my-3">
+                <button id="borrowSend" type="button" class="btn btn-lg fs-2 text-white fw-bold" value="borrow" style="background-color: #2E7D32 ">借閱</button>
+            </div>
+        </form>
+        @*借書發送後的顯示*@
+    <div id="BorrowModeSuccessContent">
+        <div class="alert alert-danger fs-1 text-center fw-bold">請輸入借閱者ID</div>
+    </div>
+    </div>
+    <div class="col-8 mt-5 mx-auto" style="height: 660px">
+        <div id="BorrowModeBook" class="d-flex align-items-center align-middle flex-row text-center mt-5">
+            <div class="row col-12">
+                <div class="alert alert-danger fs-1 fw-bold mt-5 text-center">請輸入書籍編號</div>
+            </div>
+        </div>@*書本資訊*@
+    </div>
+</div>
