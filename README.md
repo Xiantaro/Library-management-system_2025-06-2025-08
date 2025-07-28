@@ -1,3 +1,5 @@
+
+<img width="1261" height="617" alt="封面" src="https://github.com/user-attachments/assets/3c8eac71-96fb-4035-ac54-98e03f0e40a0" />
 【圖書館管理系統】（資展大專題，2025/06 ~ 2025/08）  
 使用技術：C#、ASP.NET MVC、SQL Server、AJAX、JQuery、Bootstrap 。
 介紹功能: 本作品使用了APS.NET MVC當架構。
