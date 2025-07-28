@@ -23,7 +23,7 @@
 <img width="1200" height="669" alt="書籍管理_修改新增" src="https://github.com/user-attachments/assets/9a28f8d0-16df-482a-8997-753b622fb078" />
 
 借閱模式
-<img width="1920" height="1080" alt="輸入前" src="https://github.com/user-attachments/assets/6673be54-8c39-4cfc-af59-a4d0aff45756" />
+<img width="1196" height="646" alt="借閱模式" src="https://github.com/user-attachments/assets/a331d772-9362-44ff-b83e-094a2d247599" />
 <img width="1256" height="615" alt="成功借閱" src="https://github.com/user-attachments/assets/28358464-ebe8-459d-aceb-ab32f7e6bf47" />
 
 還書模式
