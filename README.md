@@ -2,7 +2,7 @@
 
 使用技術：C#、ASP.NET MVC、SQL Server、AJAX、JQuery、Bootstrap 。
 
-介紹功能: 本作品使用了APS.NET MVC當架構。
+功能介紹: 本作品使用了APS.NET MVC當架構。
 
 對於讀者，主頁除了查詢書籍、預約活動、預約書籍，個人的帳號可以看到借閱預約紀錄、最愛藏書等。
 
