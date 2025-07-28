@@ -24,7 +24,7 @@
 
 借閱模式
 <img width="1920" height="1080" alt="輸入前" src="https://github.com/user-attachments/assets/6673be54-8c39-4cfc-af59-a4d0aff45756" />
-<img width="1280" height="720" alt="成功借閱" src="https://github.com/user-attachments/assets/61cc4d44-dd1f-4d11-80e3-2c087bd6c00c" />
+<img width="1256" height="615" alt="成功借閱" src="https://github.com/user-attachments/assets/28358464-ebe8-459d-aceb-ab32f7e6bf47" />
 
 還書模式
 <img width="1193" height="646" alt="還書模式" src="https://github.com/user-attachments/assets/1b36627e-56dd-4108-8678-2b4bfad356c7" />
