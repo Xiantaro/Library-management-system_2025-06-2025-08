@@ -23,10 +23,12 @@
 <img width="1200" height="669" alt="書籍管理_修改新增" src="https://github.com/user-attachments/assets/9a28f8d0-16df-482a-8997-753b622fb078" />
 
 借閱模式
-<img width="1196" height="646" alt="借閱模式" src="https://github.com/user-attachments/assets/0142d919-0fd7-48c3-b6de-835f9a63f6fc" />
+<img width="1920" height="1080" alt="輸入前" src="https://github.com/user-attachments/assets/6673be54-8c39-4cfc-af59-a4d0aff45756" />
+<img width="1280" height="720" alt="成功借閱" src="https://github.com/user-attachments/assets/61cc4d44-dd1f-4d11-80e3-2c087bd6c00c" />
 
 還書模式
 <img width="1193" height="646" alt="還書模式" src="https://github.com/user-attachments/assets/1b36627e-56dd-4108-8678-2b4bfad356c7" />
+<img width="1280" height="720" alt="還書後" src="https://github.com/user-attachments/assets/cc1841ec-09e8-41b4-a0c9-976997efbc25" />
 
 預約模式
 <img width="1268" height="596" alt="預約模式" src="https://github.com/user-attachments/assets/08486823-e821-4391-bb78-c674a1b22dca" />
